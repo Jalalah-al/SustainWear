@@ -4,34 +4,148 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/style.css">
-    <title>Sustain Wear | Home Page</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <title>SustainWear | Sustainable Fashion Platform</title>
 </head>
 <body>
-    <header>
-               <nav class="navBar">
-            <ul>
-                <li><a href="HomePage.html">HOMEPAGE</a></li>
-                <li><a href="SignUp.html">SIGN UP</a></li>
-                <li><a href= "SignIn.html" >SIGN IN</a></li>
-                <li><a href="AboutUs.html">ABOUT US</a></li>
-                <li><a href="Legal.html">LEGAL</a></li>
-                <li><a href="ContactUs.html">CONTACT US</a></li>
+   
+    <header class="header">
+        <nav class="navbar">
+            <div class="nav-brand">
+                <span class="logo">♻️</span>
+                <h2>SustainWear</h2>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="index.html" class="nav-link ">HOME</a></li>
+                <li><a href="AboutUs.html" class="nav-link">ABOUT US</a></li>
+                <li><a href="Legal.html" class="nav-link">LEGAL</a></li>
+                <li><a href="ContactUs.html" class="nav-link">CONTACT US</a></li>
             </ul>
+            <div class="nav-actions">
+                <a href="SignIn.html" class="btn-login">Sign In</a>
+                <a href="SignUp.html" class="btn-primary">Get Started</a>
+            </div>
+            <a href="SignIn.html" class="button"></a>
         </nav>
     </header>
 
-    <div class="container">
-    <main>
-        <div class="mainHero">
-            <div class="heroText">
-                <h1>SIGN IN</h1>
-                <p>EXPLORE SUSTAINWEAR</p>
+
+    <section class="hero">
+        <div class="hero-content">
+            <div class="hero-text">
+                <h1 class="hero-title">Give Fashion<br>a Second Life</h1>
+                <p class="hero-description">
+                    Transform your pre-loved clothing into sustainable impact. 
+                    Join thousands making fashion circular and eco-friendly.
+                </p>
+                <div class="hero-actions">
+                    <button class="btn-primary large">Start Donating</button>
+                    <button class="btn-secondary large">Learn More</button>
+                </div>
+                <div class="hero-stats">
+                    <div class="stat">
+                        <span class="stat-number">50K+</span>
+                        <span class="stat-label">Items Donated</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-number">120T</span>
+                        <span class="stat-label">CO₂ Saved</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-number">15K+</span>
+                        <span class="stat-label">Lives Impacted</span>
+                    </div>
+                </div>
+            </div>
+            <div class="hero-visual">
+                <div class="floating-card card-1">
+                    <div class="card-icon">👕</div>
+                    <p>Clothing Donation</p>
+                </div>
+                <div class="floating-card card-2">
+                    <div class="card-icon">🌱</div>
+                    <p>Eco Impact</p>
+                </div>
+                <div class="floating-card card-3">
+                    <div class="card-icon">📱</div>
+                    <p>Easy Tracking</p>
+                </div>
             </div>
         </div>
+    </section>
 
-        <section></section>
-    </main>
-    
-<footer>&#169; All rights reserved SustainWear 2025</footer>
+  
+    <section class="features">
+        <div class="container">
+            <div class="section-header">
+                <h2>How It Works</h2>
+                <p>Simple steps to make a big difference</p>
+            </div>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">1</div>
+                    <h3>List Your Items</h3>
+                    <p>Upload photos and details of clothes you want to donate</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">2</div>
+                    <h3>AI Categorization</h3>
+                    <p>Our system automatically sorts and categorizes your donations</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">3</div>
+                    <h3>Track Impact</h3>
+                    <p>See your environmental contribution and who you've helped</p>
+                </div>
+            </div>
+        </div>
+    </section>
 
-</div>
+ 
+    <section class="cta">
+        <div class="container">
+            <div class="cta-content">
+                <h2>Ready to Make a Difference?</h2>
+                <p>Join the sustainable fashion movement today</p>
+                <button class="btn-primary large">Start Donating Now</button>
+            </div>
+        </div>
+    </section>
+
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <div class="logo">♻️</div>
+                    <h3>SustainWear</h3>
+                    <p>Making fashion sustainable, one donation at a time</p>
+                </div>
+                <div class="footer-links">
+                    <div class="link-group">
+                        <h4>Platform</h4>
+                        <a href="#">How it Works</a>
+                        <a href="#">For Donors</a>
+                        <a href="#">For Charities</a>
+                    </div>
+                    <div class="link-group">
+                        <h4>Company</h4>
+                        <a href="#">About Us</a>
+                        <a href="#">Impact</a>
+                        <a href="#">Careers</a>
+                    </div>
+                    <div class="link-group">
+                        <h4>Support</h4>
+                        <a href="#">Help Center</a>
+                        <a href="#">Contact</a>
+                        <a href="#">Privacy</a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 SustainWear. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
