@@ -1,0 +1,184 @@
+/* About Us Page Styles */
+.about-hero {
+    margin-top: 80px;
+    padding: 6rem 2rem;
+    background: linear-gradient(135deg, #10B981 0%, #059669 100%);
+    color: var(--white);
+    text-align: center;
+}
+
+.about-hero-content {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.about-title {
+    font-size: 3.5rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    color: var(--white);
+}
+
+.about-subtitle {
+    font-size: 1.3rem;
+    opacity: 0.9;
+    color: var(--white);
+}
+
+.about-content {
+    padding: 6rem 2rem;
+    background: var(--white);
+}
+
+.mission-section {
+    max-width: 800px;
+    margin: 0 auto 4rem auto;
+    text-align: center;
+}
+
+.mission-section h2 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--dark);
+    margin-bottom: 2rem;
+}
+
+.mission-section p {
+    font-size: 1.2rem;
+    color: var(--gray);
+    line-height: 1.8;
+}
+
+.goals-section {
+    margin: 4rem 0;
+}
+
+.goal-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 2rem;
+    margin-top: 3rem;
+}
+
+.goal-card {
+    background: var(--white);
+    padding: 2.5rem;
+    border-radius: 12px;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--gray-light);
+    text-align: center;
+    transition: transform 0.3s ease;
+}
+
+.goal-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-lg);
+}
+
+.goal-icon {
+    font-size: 3rem;
+    margin-bottom: 1.5rem;
+}
+
+.goal-card h3 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--dark);
+    margin-bottom: 1rem;
+}
+
+.goal-card p {
+    color: var(--gray);
+    line-height: 1.6;
+}
+
+.team-section {
+    margin-top: 6rem;
+}
+
+.team-section h2 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--dark);
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+.approach-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2rem;
+}
+
+.approach-item {
+    background: var(--light);
+    padding: 2rem;
+    border-radius: 12px;
+    border-left: 4px solid var(--primary);
+}
+
+.approach-item h4 {
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: var(--dark);
+    margin-bottom: 1rem;
+}
+
+.approach-item p {
+    color: var(--gray);
+    line-height: 1.6;
+}
+
+/* Responsive Design for About Page */
+@media (max-width: 768px) {
+    .about-hero {
+        padding: 4rem 1rem;
+        margin-top: 70px;
+    }
+
+    .about-title {
+        font-size: 2.5rem;
+    }
+
+    .about-subtitle {
+        font-size: 1.1rem;
+    }
+
+    .about-content {
+        padding: 3rem 1rem;
+    }
+
+    .mission-section h2 {
+        font-size: 2rem;
+    }
+
+    .mission-section p {
+        font-size: 1.1rem;
+    }
+
+    .goal-cards {
+        grid-template-columns: 1fr;
+    }
+
+    .goal-card {
+        padding: 2rem;
+    }
+
+    .approach-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .approach-item {
+        padding: 1.5rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .about-title {
+        font-size: 2rem;
+    }
+
+    .goal-card {
+        padding: 1.5rem;
+    }
+}
