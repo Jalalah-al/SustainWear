@@ -4,11 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/signup.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <title>SustainWear | Sustainable Fashion Platform</title>
+    <title>Sign Up | SustainWear</title>
 </head>
 <body>
-   
     <header class="header">
         <nav class="navbar">
             <div class="nav-brand">
@@ -16,10 +16,10 @@
                 <h2>SustainWear</h2>
             </div>
             <ul class="nav-menu">
-                <li><a href="index.html" class="nav-link ">HOME</a></li>
-                <li><a href="AboutUs.html" class="nav-link">ABOUT US</a></li>
-                <li><a href="Legal.html" class="nav-link">LEGAL</a></li>
-                <li><a href="ContactUs.html" class="nav-link">CONTACT US</a></li>
+                <li><a href="index.html" class="nav-link">Home</a></li>
+                <li><a href="AboutUs.html" class="nav-link">About Us</a></li>
+                <li><a href="Legal.html" class="nav-link">Legal</a></li>
+                <li><a href="ContactUs.html" class="nav-link">Contact Us</a></li>
             </ul>
             <div class="nav-actions">
                 <a href="SignIn.html" class="btn-login">Sign In</a>
@@ -28,89 +28,104 @@
         </nav>
     </header>
 
-
-    <section class="hero">
-        <div class="hero-content">
-            <div class="hero-text">
-                <h1 class="hero-title">Give Fashion<br>a Second Life</h1>
-                <p class="hero-description">
-                    Transform your pre-loved clothing into sustainable impact. 
-                    Join thousands making fashion circular and eco-friendly.
-                </p>
-                <div class="hero-actions">
-                    <button class="btn-primary large">Start Donating</button>
-                    <button class="btn-secondary large">Learn More</button>
+    <main class="signup-main">
+        <div class="signup-container">
+            <div class="signup-card">
+                <div class="signup-header">
+                    <h1>Create Your Account</h1>
+                    <p>Join SustainWear and start making a difference today</p>
                 </div>
-                <div class="hero-stats">
-                    <div class="stat">
-                        <span class="stat-number">50K+</span>
-                        <span class="stat-label">Items Donated</span>
+
+                <form class="signup-form">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="firstName">First Name</label>
+                            <input type="text" id="firstName" name="firstName" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="lastName">Last Name</label>
+                            <input type="text" id="lastName" name="lastName" required>
+                        </div>
                     </div>
-                    <div class="stat">
-                        <span class="stat-number">120T</span>
-                        <span class="stat-label">CO₂ Saved</span>
+
+                    <div class="form-group">
+                        <label for="email">Email Address</label>
+                        <input type="email" id="email" name="email" required>
                     </div>
-                    <div class="stat">
-                        <span class="stat-number">15K+</span>
-                        <span class="stat-label">Lives Impacted</span>
+
+                    <div class="form-group">
+                        <label for="userType">I want to join as</label>
+                        <select id="userType" name="userType" required>
+                            <option value="">Select your role</option>
+                            <option value="donor">Donor</option>
+                            <option value="charity">Charity Staff</option>
+                        </select>
                     </div>
+
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input type="password" id="password" name="password" required>
+                        <div class="password-strength">
+                            <div class="strength-bar"></div>
+                            <span class="strength-text">Password strength</span>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="confirmPassword">Confirm Password</label>
+                        <input type="password" id="confirmPassword" name="confirmPassword" required>
+                    </div>
+
+                    <div class="form-checkbox">
+                        <input type="checkbox" id="terms" name="terms" required>
+                        <label for="terms">
+                            I agree to the <a href="Legal.html">Terms of Service</a> and <a href="Legal.html">Privacy Policy</a>
+                        </label>
+                    </div>
+
+                    <div class="form-checkbox">
+                        <input type="checkbox" id="newsletter" name="newsletter">
+                        <label for="newsletter">
+                            Send me updates about sustainability and new features
+                        </label>
+                    </div>
+
+                    <button type="submit" class="btn-signup">Create Account</button>
+                </form>
+
+                <div class="signup-footer">
+                    <p>Already have an account? <a href="SignIn.html">Sign in here</a></p>
                 </div>
             </div>
-            <div class="hero-visual">
-                <div class="floating-card card-1">
-                    <div class="card-icon">👕</div>
-                    <p>Clothing Donation</p>
-                </div>
-                <div class="floating-card card-2">
-                    <div class="card-icon">🌱</div>
-                    <p>Eco Impact</p>
-                </div>
-                <div class="floating-card card-3">
-                    <div class="card-icon">📱</div>
-                    <p>Easy Tracking</p>
+
+            <div class="signup-benefits">
+                <div class="benefits-card">
+                    <h3>Why Join SustainWear?</h3>
+                    <div class="benefit-item">
+                        <div class="benefit-icon">🌍</div>
+                        <div class="benefit-text">
+                            <h4>Track Your Environmental Impact</h4>
+                            <p>See how much CO₂ you save with every donation</p>
+                        </div>
+                    </div>
+                    <div class="benefit-item">
+                        <div class="benefit-icon">👕</div>
+                        <div class="benefit-text">
+                            <h4>Easy Donation Management</h4>
+                            <p>Upload, track, and manage all your donations in one place</p>
+                        </div>
+                    </div>
+                    <div class="benefit-item">
+                        <div class="benefit-icon">🤝</div>
+                        <div class="benefit-text">
+                            <h4>Join a Community</h4>
+                            <p>Connect with like-minded people making a difference</p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-    </section>
-
-  
-    <section class="features">
-        <div class="container">
-            <div class="section-header">
-                <h2>How It Works</h2>
-                <p>Simple steps to make a big difference</p>
-            </div>
-            <div class="features-grid">
-                <div class="feature-card">
-                    <div class="feature-icon">1</div>
-                    <h3>List Your Items</h3>
-                    <p>Upload photos and details of clothes you want to donate</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">2</div>
-                    <h3>AI Categorization</h3>
-                    <p>Our system automatically sorts and categorizes your donations</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">3</div>
-                    <h3>Track Impact</h3>
-                    <p>See your environmental contribution and who you've helped</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
- 
-    <section class="cta">
-        <div class="container">
-            <div class="cta-content">
-                <h2>Ready to Make a Difference?</h2>
-                <p>Join the sustainable fashion movement today</p>
-                <button class="btn-primary large">Start Donating Now</button>
-            </div>
-        </div>
-    </section>
-
+    </main>
 
     <footer class="footer">
         <div class="container">
@@ -129,15 +144,15 @@
                     </div>
                     <div class="link-group">
                         <h4>Company</h4>
-                        <a href="#">About Us</a>
+                        <a href="AboutUs.html">About Us</a>
                         <a href="#">Impact</a>
                         <a href="#">Careers</a>
                     </div>
                     <div class="link-group">
                         <h4>Support</h4>
-                        <a href="#">Help Center</a>
-                        <a href="#">Contact</a>
-                        <a href="#">Privacy</a>
+                        <a href="ContactUs.html">Contact</a>
+                        <a href="Legal.html">Privacy</a>
+                        <a href="Legal.html">Terms</a>
                     </div>
                 </div>
             </div>
