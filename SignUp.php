@@ -14,7 +14,7 @@
     <header class="header">
         <nav class="navbar">
             <div class="nav-brand">
-                <span class="logo">♻️</span>
+                <span class="logo"><img src="images/logo.png" id="logo" alt="SustainWear Logo"></span>
                 <h2>SustainWear</h2>
             </div>
             <ul class="nav-menu">

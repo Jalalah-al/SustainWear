@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/style.css">
+    <link rel ="icon" href="images/logo.png" sizes="16x16">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <title>SustainWear | Sustainable Fashion Platform</title>
 </head>
@@ -12,7 +13,7 @@
     <header class="header">
         <nav class="navbar">
             <div class="nav-brand">
-                <span class="logo">♻️</span>
+                <span class="logo"><img src="images/logo.png" id="logo" alt="SustainWear Logo"></span>
                 <h2>SustainWear</h2>
             </div>
             <ul class="nav-menu">
