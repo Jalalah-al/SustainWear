@@ -18,10 +18,10 @@
                 <h2>SustainWear</h2>
             </div>
             <ul class="nav-menu">
-                <li><a href="index.html" class="nav-link">Home</a></li>
-                <li><a href="AboutUs.html" class="nav-link">About Us</a></li>
-                <li><a href="Legal.html" class="nav-link">Legal</a></li>
-                <li><a href="ContactUs.html" class="nav-link">Contact Us</a></li>
+                <li><a href="index.php" class="nav-link">HOME</a></li>
+                <li><a href="AboutUs.php" class="nav-link">ABOUT US</a></li>
+                <li><a href="Legal.php" class="nav-link">LEGAL</a></li>
+                <li><a href="ContactUs.php" class="nav-link">CONTACT US</a></li>
             </ul>
             <div class="nav-actions">
                 <a href="SignIn.php" class="btn-login">Sign In</a>
