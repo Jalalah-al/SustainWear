@@ -72,7 +72,6 @@
                             </div>
                         </div>
 
-                        <!-- Image Upload -->
                         <div class="form-section">
                             <h3>Upload Photos</h3>
                             <div class="image-upload-container">

@@ -1,6 +1,6 @@
 <?php 
 function checkSession ($path) {
-    $expireAfter = 30; // in minutes
+    $expireAfter = 30; 
 
     if (isset($_SESSION['last_action'])) {
         $secondsInactive = time() - $_SESSION['last_action'];

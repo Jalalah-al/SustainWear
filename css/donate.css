@@ -1,4 +1,4 @@
-/* Donate Page Styles */
+
 .donate-main {
     margin-top: 80px;
     padding: 2rem;
@@ -109,7 +109,6 @@
     min-height: 80px;
 }
 
-/* Image Upload */
 .image-upload-container {
     margin-top: 1rem;
 }
@@ -179,7 +178,6 @@
     font-size: 0.7rem;
 }
 
-/* Checkbox */
 .form-checkbox {
     display: flex;
     align-items: center;
@@ -195,7 +193,6 @@
     color: var(--gray);
 }
 
-/* Donate Button */
 .btn-donate {
     width: 100%;
     padding: 1rem 2rem;
@@ -216,7 +213,6 @@
     box-shadow: var(--shadow);
 }
 
-/* Sidebar */
 .donate-sidebar {
     display: flex;
     flex-direction: column;
@@ -285,7 +281,6 @@
     border-bottom: none;
 }
 
-/* Responsive */
 @media (max-width: 768px) {
     .donate-main {
         margin-top: 70px;

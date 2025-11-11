@@ -1,4 +1,4 @@
-/* Sign In Page Styles */
+
 .signin-main {
     margin-top: 80px;
     padding: 2rem;
@@ -150,7 +150,6 @@
     text-decoration: underline;
 }
 
-/* Benefits Section */
 .signin-benefits {
     height: fit-content;
 }
@@ -203,7 +202,6 @@
     line-height: 1.5;
 }
 
-/* Responsive Design */
 @media (max-width: 968px) {
     .signin-container {
         grid-template-columns: 1fr;

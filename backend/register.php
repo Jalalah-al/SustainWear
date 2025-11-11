@@ -107,7 +107,6 @@ if (isset($_POST['login'])) {
         die("Error: Database connection failed. <a href='../SignIn.php'>Go back</a>");
     }
     
-    // Check if user exists by username or email
     $stmt = $conn->prepare("SELECT user_id, username, password FROM users WHERE username = ? OR email = ?");
     $stmt->bind_param("ss", $username, $username);
     $stmt->execute();

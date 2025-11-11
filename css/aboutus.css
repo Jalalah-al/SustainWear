@@ -1,4 +1,4 @@
-/* About Us Page Styles */
+
 .about-hero {
     margin-top: 80px;
     padding: 6rem 2rem;
@@ -129,7 +129,6 @@
     line-height: 1.6;
 }
 
-/* Responsive Design for About Page */
 @media (max-width: 768px) {
     .about-hero {
         padding: 4rem 1rem;
