@@ -1,34 +1,33 @@
 <?php
-// backend/register.php
+
 session_start();
 require_once 'connect.php';
 
 if (isset($_POST['signUp'])) {
-    // Handle Registration
+   
     $username = trim($_POST['username']);
     $email = trim($_POST['email']);
     $password = $_POST['password'];
     $confirmPassword = $_POST['confirmPassword'];
     
-    // Basic validation
+  
     if (empty($username) || empty($email) || empty($password) || empty($confirmPassword)) {
         die("Error: All fields are required. <a href='../SignUp.php'>Go back</a>");
     }
     
-    // Check if passwords match
+
     if ($password !== $confirmPassword) {
         die("Error: Passwords do not match. <a href='../SignUp.php'>Go back</a>");
     }
     
-    // Get database connection
+   
     $conn = connectDB();
     
     if (!$conn) {
         die("Error: Database connection failed. <a href='../SignUp.php'>Go back</a>");
     }
     
-    // Check if user already exists
-    // Check username
+   
     $check_user = $conn->prepare("SELECT user_id FROM users WHERE username = ?");
     $check_user->bind_param("s", $username);
     $check_user->execute();
@@ -39,7 +38,7 @@ if (isset($_POST['signUp'])) {
     }
     $check_user->close();
     
-    // Check email
+    
     $check_email = $conn->prepare("SELECT user_id FROM users WHERE email = ?");
     $check_email->bind_param("s", $email);
     $check_email->execute();
@@ -50,7 +49,7 @@ if (isset($_POST['signUp'])) {
     }
     $check_email->close();
     
-    // Insert new user
+    
     $hashed_password = password_hash($password, PASSWORD_DEFAULT);
     
     $stmt = $conn->prepare("INSERT INTO users (username, email, password) VALUES (?, ?, ?)");
@@ -88,11 +87,11 @@ if (isset($_POST['signUp'])) {
 }
 
 if (isset($_POST['login'])) {
-    // Handle Login
+  
     $username = trim($_POST['username']);
     $password = $_POST['password'];
     
-    // Basic validation
+   
     if (empty($username) || empty($password)) {
         die("Error: Please enter both username/email and password. <a href='../SignIn.php'>Go back</a>");
     }
@@ -112,14 +111,14 @@ if (isset($_POST['login'])) {
     if ($result->num_rows === 1) {
         $user = $result->fetch_assoc();
         
-        // Verify password
+       
         if (password_verify($password, $user['password'])) {
-            // Login successful
+           
             $_SESSION['user_id'] = $user['user_id'];
             $_SESSION['username'] = $user['username'];
             $_SESSION['loggedin'] = true;
             
-            // Redirect to home page
+           
             header('Location: ../donate.php');
             exit();
         } else {
@@ -133,7 +132,7 @@ if (isset($_POST['login'])) {
     $conn->close();
 }
 
-// If not a POST request, redirect to signup page
+
 if ($_SERVER['REQUEST_METHOD'] != 'POST') {
     header('Location: ../SignUp.php');
     exit();
