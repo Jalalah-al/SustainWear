@@ -86,6 +86,11 @@ if (isset($_POST['signUp'])) {
     $conn->close();
 }
 
+
+
+
+
+
 if (isset($_POST['login'])) {
   
     $username = trim($_POST['username']);

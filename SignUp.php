@@ -49,6 +49,15 @@
                     <input type="email" id="email" name="email" value="<?php echo isset($_POST['email']) ? htmlspecialchars($_POST['email']) : ''; ?>" required>
                 </div>
 
+                   <div class="form-group">
+                    <label for="userType">User Type</label>
+                    <select name="userType" id="userType" required>
+                        <option value="" disabled selected>Select User Type</option>
+                        <option value="doner">Doner</option>
+                        <option value="charityStaff">Charity Staff</option>
+                    </select>   
+                </div>
+
                 <div class="form-group">
                     <label for="password">Password</label>
                     <input type="password" id="password" name="password" required>
