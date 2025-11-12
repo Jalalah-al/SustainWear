@@ -43,7 +43,7 @@
                 </p>
                 <div class="hero-actions">
                     <a href="SignUp.php" class="btn-primary large">Start Donating</a>
-                    <a href="AboutUs.html" class="btn-secondary large">Learn More</a>
+                    <a href="AboutUs.php" class="btn-secondary large">Learn More</a>
                 </div>
                 <div class="hero-stats">
                     <div class="stat">
@@ -127,20 +127,20 @@
                 <div class="footer-links">
                     <div class="link-group">
                         <h4>Platform</h4>
-                        <a href="AboutUs.html">How it Works</a>
+                        <a href="AboutUs.php">How it Works</a>
                         <a href="SignUp.php">For Donors</a>
                         <a href="SignUp.php">For Charities</a>
                     </div>
                     <div class="link-group">
                         <h4>Company</h4>
-                        <a href="AboutUs.html">About Us</a>
-                        <a href="AboutUs.html">Impact</a>
+                        <a href="AboutUs.php">About Us</a>
+                        <a href="AboutUs.php">Impact</a>
                     </div>
                     <div class="link-group">
                         <h4>Support</h4>
-                        <a href="ContactUs.html">Help Center</a>
-                        <a href="ContactUs.html">Contact</a>
-                        <a href="Legal.html">Privacy</a>
+                        <a href="ContactUs.php">Help Center</a>
+                        <a href="ContactUs.php">Contact</a>
+                        <a href="Legal.php">Privacy</a>
                     </div>
                 </div>
             </div>

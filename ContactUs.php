@@ -16,10 +16,10 @@
                 <h2>SustainWear</h2>
             </div>
             <ul class="nav-menu">
-                <li><a href="index.html" class="nav-link">HOME</a></li>
-                <li><a href="AboutUs.html" class="nav-link">ABOUT US</a></li>
-                <li><a href="Legal.html" class="nav-link">LEGAL</a></li>
-                <li><a href="ContactUs.html" class="nav-link active">CONTACT US</a></li>
+                <li><a href="index.php" class="nav-link">HOME</a></li>
+                <li><a href="AboutUs.php" class="nav-link">ABOUT US</a></li>
+                <li><a href="Legal.php" class="nav-link">LEGAL</a></li>
+                <li><a href="ContactUs.php" class="nav-link active">CONTACT US</a></li>
             </ul>
             <div class="nav-actions">
                 <a href="SignIn.php" class="btn-login">Sign In</a>
@@ -150,20 +150,20 @@
                 <div class="footer-links">
                     <div class="link-group">
                         <h4>Platform</h4>
-                        <a href="AboutUs.html">How it Works</a>
-                        <a href="SignUp.html">For Donors</a>
-                        <a href="SignUp.html">For Charities</a>
+                        <a href="AboutUs.php">How it Works</a>
+                        <a href="SignUp.php">For Donors</a>
+                        <a href="SignUp.php">For Charities</a>
                     </div>
                     <div class="link-group">
                         <h4>Company</h4>
-                        <a href="AboutUs.html">About Us</a>
-                        <a href="AboutUs.html">Impact</a>
+                        <a href="AboutUs.php">About Us</a>
+                        <a href="AboutUs.php">Impact</a>
                     </div>
                     <div class="link-group">
                         <h4>Support</h4>
-                        <a href="ContactUs.html">Contact</a>
-                        <a href="Legal.html">Privacy</a>
-                        <a href="Legal.html">Terms</a>
+                        <a href="ContactUs.php">Contact</a>
+                        <a href="Legal.php">Privacy</a>
+                        <a href="Legal.php">Terms</a>
                     </div>
                 </div>
             </div>

@@ -38,7 +38,7 @@
             <div class="donate-content">
                 <div class="donate-form-container">
                     <form class="donate-form" id="donationForm" method="POST" enctype="multipart/form-data">
-                        <!-- Clothing Details -->
+                       
                         <div class="form-section">
                             <h3>Clothing Details</h3>
                             <div class="form-row">
@@ -151,9 +151,9 @@
                     </div>
                     <div class="link-group">
                         <h4>Support</h4>
-                        <a href="ContactUs.html">Contact</a>
-                        <a href="Legal.html">Privacy</a>
-                        <a href="Legal.html">Terms</a>
+                        <a href="ContactUs.php">Contact</a>
+                        <a href="Legal.php">Privacy</a>
+                        <a href="Legal.php">Terms</a>
                     </div>
                 </div>
             </div>

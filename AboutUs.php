@@ -16,10 +16,10 @@
                 <h2>SustainWear</h2>
             </div>
             <ul class="nav-menu">
-                <li><a href="index.html" class="nav-link">HOME</a></li>
-                <li><a href="AboutUs.html" class="nav-link active">ABOUT US</a></li>
-                <li><a href="Legal.html" class="nav-link">LEGAL</a></li>
-                <li><a href="ContactUs.html" class="nav-link">CONTACT US</a></li>
+                <li><a href="index.php" class="nav-link">HOME</a></li>
+                <li><a href="AboutUs.php" class="nav-link active">ABOUT US</a></li>
+                <li><a href="Legal.php" class="nav-link">LEGAL</a></li>
+                <li><a href="ContactUs.php" class="nav-link">CONTACT US</a></li>
             </ul>
 
             <div class="nav-actions">
@@ -81,9 +81,9 @@
                     </div>
                     <div class="link-group">
                         <h4>Support</h4>
-                        <a href="ContactUs.html">Contact</a>
-                        <a href="Legal.html">Privacy</a>
-                        <a href="Legal.html">Terms</a>
+                        <a href="ContactUs.php">Contact</a>
+                        <a href="Legal.php">Privacy</a>
+                        <a href="Legal.php">Terms</a>
                     </div>
                 </div>
             </div>
