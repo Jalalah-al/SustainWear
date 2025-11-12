@@ -18,9 +18,9 @@
             </div>
             <ul class="nav-menu">
                 <li><a href="#" class="nav-link active">HOME</a></li>
-                <li><a href="AboutUs.html" class="nav-link">ABOUT US</a></li>
-                <li><a href="Legal.html" class="nav-link">LEGAL</a></li>
-                <li><a href="ContactUs.html" class="nav-link">CONTACT US</a></li>
+                <li><a href="AboutUs.php" class="nav-link">ABOUT US</a></li>
+                <li><a href="Legal.php" class="nav-link">LEGAL</a></li>
+                <li><a href="ContactUs.php" class="nav-link">CONTACT US</a></li>
             </ul>
             <div class="nav-actions">
                  <a href="SignIn.php" class="btn-login">Sign In</a>
