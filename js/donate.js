@@ -4,6 +4,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const imagePreview = document.getElementById('imagePreview');
     const donationForm = document.getElementById('donationForm');
 
+    
     uploadArea.addEventListener('click', () => {
         imageUpload.click();
     });
@@ -45,8 +46,10 @@ document.addEventListener('DOMContentLoaded', function() {
         imagePreview.appendChild(previewItem);
     }
 
+    
     donationForm.addEventListener('submit', function(e) {
         e.preventDefault();
+        
         
         const clothingType = document.getElementById('clothingType').value;
         const condition = document.getElementById('condition').value;
@@ -57,6 +60,7 @@ document.addEventListener('DOMContentLoaded', function() {
             return;
         }
 
+    
         const formData = new FormData(this);
         
         fetch('submit_donation.php', {

@@ -1,3 +1,63 @@
+<?php
+// Process form submission first
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    // Enable error reporting
+    error_reporting(E_ALL);
+    ini_set('display_errors', 1);
+    
+    $host = "localhost";
+    $username = "root";
+    $password = "";
+    $database = "sustainwear";
+
+    $conn = new mysqli($host, $username, $password, $database);
+
+    if ($conn->connect_error) {
+        die("Connection failed: " . $conn->connect_error);
+    }
+
+    $clothing_type = $_POST['clothingType'];
+    $item_condition = $_POST['condition'];
+    $description = $_POST['description'];
+    $account_id = 1; // Required by your table
+
+    // Create uploads directory if it doesn't exist
+    $upload_dir = "uploads/";
+    if (!is_dir($upload_dir)) {
+        mkdir($upload_dir, 0755, true);
+    }
+
+    $image_path = '';
+    if (!empty($_FILES['images']['name'][0])) {
+        // Only use first image since your column is varchar(255)
+        $file_name = $_FILES['images']['name'][0];
+        $file_tmp = $_FILES['images']['tmp_name'][0];
+        
+        $new_file_name = uniqid() . "_" . $file_name;
+        $destination = $upload_dir . $new_file_name;
+  
+        if (move_uploaded_file($file_tmp, $destination)) {
+            $image_path = $destination;
+        }
+    }
+
+    // CORRECT SQL - matches your table structure
+    $sql = "INSERT INTO donations (account_id, clothing_type, item_condition, description, images) 
+            VALUES (?, ?, ?, ?, ?)";
+
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("issss", $account_id, $clothing_type, $item_condition, $description, $image_path);
+
+    if ($stmt->execute()) {
+        $success_message = "Donation submitted successfully!";
+    } else {
+        $error_message = "Error: " . $stmt->error;
+    }
+
+    $stmt->close();
+    $conn->close();
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -9,9 +69,24 @@
     <title>Donate Clothes | SustainWear</title>
 </head>
 <body>
-    <header class="header">
-        <?php include 'headerAndFooter/header.php'; ?>
 
+    <header class="header">
+        <nav class="navbar">
+            <div class="nav-brand">
+                <span class="logo"><img src="images/logo.png" id="logo" alt="SustainWear Logo"></span>
+                <h2>SustainWear</h2>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="donate.php" class="nav-link active">Start Donation</a></li>
+                <li><a href="trackDonations.php" class="nav-link">Track Donations</a></li>
+                <li><a href="profile.php" class="nav-link">Profile</a></li>
+            </ul>
+
+            <div class="nav-actions">
+                <a href="SignIn.php" class="btn-login">Sign In</a>
+                <a href="SignUp.php" class="btn-primary">Get Started</a>
+            </div>
+        </nav>
     </header>
 
     <main class="donate-main">
@@ -21,9 +96,23 @@
                 <p>Give your pre-loved clothing a new life and make a sustainable impact</p>
             </div>
 
+            <!-- Success/Error Messages -->
+            <?php if (isset($success_message)): ?>
+                <div class="alert alert-success" style="background: #d4ffd4; padding: 15px; border-radius: 5px; margin: 20px 0; border: 1px solid #00ff00;">
+                    <?php echo $success_message; ?>
+                </div>
+            <?php endif; ?>
+            
+            <?php if (isset($error_message)): ?>
+                <div class="alert alert-error" style="background: #ffd4d4; padding: 15px; border-radius: 5px; margin: 20px 0; border: 1px solid #ff0000;">
+                    <?php echo $error_message; ?>
+                </div>
+            <?php endif; ?>
+
             <div class="donate-content">
                 <div class="donate-form-container">
-                    <form class="donate-form" id="donationForm" method="POST" enctype="multipart/form-data">
+                    <!-- FORM SUBMITS TO THIS SAME PAGE -->
+                    <form class="donate-form" method="POST" enctype="multipart/form-data">
                        
                         <div class="form-section">
                             <h3>Clothing Details</h3>
@@ -75,6 +164,7 @@
                     </form>
                 </div>
 
+                <!-- Rest of your HTML remains the same -->
                 <div class="donate-sidebar">
                     <div class="impact-calculator">
                         <h3>Your Impact</h3>
