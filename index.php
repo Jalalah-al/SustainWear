@@ -11,17 +11,13 @@
 <body>
    
     <header class="header">
-        <?php include 'headerAndFooter/header.php'; ?>
+        <?php include 'headerAndFooter/header.php'; 
+        include 'backend/checkSession.php';
+        ?>
 
     </header>
 
-    <?php
-     if (isset($_SESSION['user_ID'])) {
-        $isLoggedIn = true;
-    } else {
-        $isLoggedIn = false;
-    }
-    ?>
+ 
 
 
 
@@ -74,7 +70,7 @@
   
     <?php
     if($isLoggedIn){
-      echo' <p>You are logged in!</p>';
+      echo" {$email}";
     }
     else{
       echo' <p>You are not logged in.</p>';
