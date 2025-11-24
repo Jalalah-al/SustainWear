@@ -15,6 +15,17 @@
 
     </header>
 
+    <?php
+     if (isset($_SESSION['user_ID'])) {
+        $isLoggedIn = true;
+    } else {
+        $isLoggedIn = false;
+    }
+    ?>
+
+
+
+
 
     <section class="hero">
         <div class="hero-content">
@@ -61,6 +72,15 @@
     </section>
 
   
+    <?php
+    if($isLoggedIn){
+      echo' <p>You are logged in!</p>';
+    }
+    else{
+      echo' <p>You are not logged in.</p>';
+    }
+    ?>
+
     <section class="features">
         <div class="container">
             <div class="section-header">

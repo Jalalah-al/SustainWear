@@ -124,7 +124,7 @@ if (isset($_POST['login'])) {
             $_SESSION['loggedin'] = true;
             
            
-            header('Location: ../donate.php');
+            header('Location: ../index.php');
             exit();
         } else {
             echo "Error: Invalid password. <a href='../SignIn.php'>Try again</a>";

@@ -1,4 +1,22 @@
 <?php
+require 'backend/connect.php';
+include 'backend/session.php';
+
+$conn = connectDB();
+
+
+ 
+$path = "SignIn.php"; //this path is to pass to checkSession function from session.php 
+    
+session_start(); //must start a session in order to use session in this page.
+if (!isset($_SESSION['user_ID'])){
+  session_unset();
+  session_destroy();
+  header("Location:".$path);//return to the login page
+}
+
+$user_ID = $_SESSION['user_ID'];
+
 // Process form submission first
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Enable error reporting
