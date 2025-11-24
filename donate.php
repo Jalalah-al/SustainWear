@@ -90,7 +90,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 
 
-
+<?php if($userType === 'charityStaff'): ?>
 <main class="donate-main">
     <div class="container">
         <div class="donate-header">
@@ -178,9 +178,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 </div>
     </div>
 </main>
-
-
-
+<?php else: ?>
 
 
     <main class="donate-main">
@@ -298,6 +296,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             </div>
         </div>
     </main>
+<?php endif; ?>
 
     <footer class="footer">
         <div class="container">
