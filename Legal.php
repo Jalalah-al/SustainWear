@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/style.css">
+      <link rel ="icon" href="images/logo.png" sizes="16x16">
     <link rel="stylesheet" href="css/legal.css">
     <script src="js/smoothScroll.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
