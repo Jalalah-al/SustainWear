@@ -11,18 +11,66 @@
 <body>
    
     <header class="header">
-        <?php include 'headerAndFooter/header.php'; 
+        <?php 
         include 'backend/checkSession.php';
+
+        if($isLoggedIn){
+            include 'headerAndFooter/loggedInHeader.php';
+        }
+        else{
+            include 'headerAndFooter/header.php';
+        }
         ?>
 
     </header>
 
- 
 
 
-
-
-
+<?php if($isLoggedIn): ?>
+    <section class="hero">
+        <div class="hero-content">
+            <div class="hero-text">
+                <h1 class="hero-title">Welcome back,<br><?php echo $username; ?></h1>
+                <p class="hero-description">
+                    Transform your pre-loved clothing into sustainable impact. 
+                    Join thousands making fashion circular and eco-friendly.
+                </p>
+                <div class="hero-actions">
+                    <a href="SignUp.php" class="btn-primary large">Start Donating</a>
+                    <a href="AboutUs.php" class="btn-secondary large">Learn More</a>
+                </div>
+                <div class="hero-stats">
+                    <div class="stat">
+                        <span class="stat-number">50K+</span>
+                        <span class="stat-label">Items Donated</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-number">120T</span>
+                        <span class="stat-label">CO₂ Saved</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-number">15K+</span>
+                        <span class="stat-label">Lives Impacted</span>
+                    </div>
+                </div>
+            </div>
+            <div class="hero-visual">
+                <div class="floating-card card-1">
+                    <div class="card-icon">👕</div>
+                    <p>Clothing Donation</p>
+                </div>
+                <div class="floating-card card-2">
+                    <div class="card-icon">🌱</div>
+                    <p>Eco Impact</p>
+                </div>
+                <div class="floating-card card-3">
+                    <div class="card-icon">📱</div>
+                    <p>Easy Tracking</p>
+                </div>
+            </div>
+        </div>
+    </section>
+<?php else: ?>
     <section class="hero">
         <div class="hero-content">
             <div class="hero-text">
@@ -66,11 +114,14 @@
             </div>
         </div>
     </section>
+<?php endif; ?>
+
+   
 
   
     <?php
     if($isLoggedIn){
-      echo" {$email}";
+      echo" you are a {$userType}";
     }
     else{
       echo' <p>You are not logged in.</p>';

@@ -24,7 +24,7 @@ if ($isLoggedIn) {
         $query = mysqli_query($conn, "SELECT *
                         FROM users AS u
                         INNER JOIN accounts AS a ON u.user_id = a.user_id 
-                        INNER JOIN donations AS d ON d.account_id = a.account_id
+                        LEFT JOIN donations AS d ON d.account_id = a.account_id
                         WHERE u.user_id = $user_ID" );
 
         if ($query && mysqli_num_rows($query) > 0) {
@@ -33,8 +33,8 @@ if ($isLoggedIn) {
             $username = $result['username'];
             $account_id = $result['account_id'];
             $email = $result['email'];
-          
-            
+            $userType = $result['userType'];
+     
         } else {
             echo "Error: No data found for user.";
         }

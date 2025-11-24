@@ -54,11 +54,7 @@ $contact_active = ($current_page == 'ContactUs.php') ? 'active' : '';
         </ul>
 
         <div class="nav-actions">
-                <a href="SignIn.php" class="btn-login">Sign In</a>
-                <a href="SignUp.php" class="btn-primary">Get Started</a>
-            </div>
+            <a href="logOut.php" class="btn-primary">LOG OUT</a>
+        </div>
     </nav>
 </header>
-
-
-     

@@ -7,11 +7,12 @@ if (isset($_POST['signUp'])) {
    
     $username = trim($_POST['username']);
     $email = trim($_POST['email']);
+    $userType = $_POST['userType']; // ADD THIS LINE
     $password = $_POST['password'];
     $confirmPassword = $_POST['confirmPassword'];
     
   
-    if (empty($username) || empty($email) || empty($password) || empty($confirmPassword)) {
+    if (empty($username) || empty($email) || empty($userType) || empty($password) || empty($confirmPassword)) {
         die("Error: All fields are required. <a href='../SignUp.php'>Go back</a>");
     }
     
@@ -52,10 +53,35 @@ if (isset($_POST['signUp'])) {
     
     $hashed_password = password_hash($password, PASSWORD_DEFAULT);
     
-    $stmt = $conn->prepare("INSERT INTO users (username, email, password) VALUES (?, ?, ?)");
-    $stmt->bind_param("sss", $username, $email, $hashed_password);
+    // Start transaction to ensure both operations succeed or fail together
+    $conn->begin_transaction();
     
-    if ($stmt->execute()) {
+    try {
+        // Insert into users table - USE THE userType FROM FORM
+        $stmt = $conn->prepare("INSERT INTO users (username, email, password, userType) VALUES (?, ?, ?, ?)");
+        $stmt->bind_param("ssss", $username, $email, $hashed_password, $userType); // CHANGE TO 4 PARAMETERS
+        
+        if (!$stmt->execute()) {
+            throw new Exception("User creation failed: " . $stmt->execute());
+        }
+        
+        // Get the last inserted user_id
+        $user_id = $conn->insert_id;
+        $stmt->close();
+        
+        // Insert into accounts table with EMPTY STRINGS instead of NULL
+        $stmt_account = $conn->prepare("INSERT INTO accounts (user_id, profilePicture, bio) VALUES (?, '', '')");
+        $stmt_account->bind_param("i", $user_id);
+        
+        if (!$stmt_account->execute()) {
+            throw new Exception("Account creation failed: " . $stmt_account->execute());
+        }
+        
+        $stmt_account->close();
+        
+        // Commit the transaction
+        $conn->commit();
+        
         echo "
         <!DOCTYPE html>
         <html>
@@ -73,20 +99,20 @@ if (isset($_POST['signUp'])) {
             <p>Your account has been created successfully.</p>
             <div class='btn-container'>
                 <a href='../SignIn.php' class='btn'>Sign In</a>
-                <a href='../index.html' class='btn'>Go Home</a>
+                <a href='../index.php' class='btn'>Go Home</a>
             </div>
         </body>
         </html>
         ";
-    } else {
-        echo "Error: Registration failed - " . $stmt->error . " <a href='../SignUp.php'>Try again</a>";
+        
+    } catch (Exception $e) {
+        // Rollback the transaction on error
+        $conn->rollback();
+        echo "Error: " . $e->getMessage() . " <a href='../SignUp.php'>Try again</a>";
     }
     
-    $stmt->close();
     $conn->close();
 }
-
-
 
 
 
@@ -107,7 +133,7 @@ if (isset($_POST['login'])) {
         die("Error: Database connection failed. <a href='../SignIn.php'>Go back</a>");
     }
     
-    // Check if user exists by username or email
+    // --this checks if the user exists by username or email ---//
     $stmt = $conn->prepare("SELECT user_id, username, password FROM users WHERE username = ? OR email = ?");
     $stmt->bind_param("ss", $username, $username);
     $stmt->execute();

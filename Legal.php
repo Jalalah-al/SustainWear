@@ -11,7 +11,16 @@
 </head>
 <body>
     <header class="header">
-        <?php include 'headerAndFooter/header.php'; ?>
+         <?php 
+        include 'backend/checkSession.php';
+
+        if($isLoggedIn){
+            include 'headerAndFooter/loggedInHeader.php';
+        }
+        else{
+            include 'headerAndFooter/header.php';
+        }
+        ?>
 
     </header>
 
