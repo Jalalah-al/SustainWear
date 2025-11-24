@@ -9,6 +9,7 @@
     <title>SustainWear | Sustainable Fashion Platform</title>
 </head>
 <body>
+    <p>test</p>
    
     <header class="header">
         <?php include 'headerAndFooter/header.php'; ?>
