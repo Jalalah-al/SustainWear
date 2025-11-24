@@ -64,30 +64,110 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/style.css">
+     <script src="js/donate.js"></script>
     <link rel="stylesheet" href="css/donate.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <title>Donate Clothes | SustainWear</title>
 </head>
 <body>
 
-    <header class="header">
-        <nav class="navbar">
-            <div class="nav-brand">
-                <span class="logo"><img src="images/logo.png" id="logo" alt="SustainWear Logo"></span>
-                <h2>SustainWear</h2>
-            </div>
-            <ul class="nav-menu">
-                <li><a href="donate.php" class="nav-link active">Start Donation</a></li>
-                <li><a href="trackDonations.php" class="nav-link">Track Donations</a></li>
-                <li><a href="profile.php" class="nav-link">Profile</a></li>
-            </ul>
+<?php include 'headerAndFooter/header.php'; ?>
 
-            <div class="nav-actions">
-                <a href="SignIn.php" class="btn-login">Sign In</a>
-                <a href="SignUp.php" class="btn-primary">Get Started</a>
+
+
+
+
+<main class="donate-main">
+    <div class="container">
+        <div class="donate-header">
+            <h1>Charity Staff Panel</h1>
+            <p>Review donations, create listings, and manage activity</p>
+        </div>
+
+        <div class="donate-content">
+
+            <div class="donate-form-container">
+               
+                <form class="donate-form" id="reviewDonationsForm">
+                    <div class="form-section">
+                        <h3>Review Incoming Donations</h3>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="reviewItem">Item</label>
+                                <select id="reviewItem" name="reviewItem">
+                                    <option value="">Select pending item</option>
+                                    <option value="shirt">Blue Shirt — Good</option>
+                                    <option value="shoes">Running Shoes — Excellent</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="decision">Decision</label>
+                                <select id="decision" name="decision">
+                                    <option value="">Choose</option>
+                                    <option value="approve">Approve</option>
+                                    <option value="reject">Reject</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="staffNotes">Staff Notes</label>
+                            <textarea id="staffNotes" rows="3" placeholder="Add notes about approval/rejection…"></textarea>
+                        </div>
+
+                        <button type="submit" class="btn-donate" id="charity-btn">Submit Review</button>
+                    </div>
+                </form>
             </div>
-        </nav>
-    </header>
+
+        
+            <div class="donate-sidebar">
+
+                <div class="impact-calculator">
+                    <h3>Staff Dashboard</h3>
+
+                    <div class="impact-item">
+                        <div class="impact-icon"></div>
+                        <div class="impact-text">
+                            <h4>Total Donations</h4>
+                            <p>142 items received</p>
+                        </div>
+                    </div>
+
+                    <div class="impact-item">
+                        <div class="impact-icon"></div>
+                        <div class="impact-text">
+                            <h4>Pending Reviews</h4>
+                            <p>24 items awaiting approval</p>
+                        </div>
+                    </div>
+
+                    <div class="impact-item">
+                        <div class="impact-icon"></div>
+                        <div class="impact-text">
+                            <h4>Approved Listings</h4>
+                            <p>118 items available</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="donation-tips">
+                    <h3>Staff Tips</h3>
+                    <ul>
+                        <li>Double-check item conditions</li>
+                        <li>Add helpful notes for buyers</li>
+                        <li>Ensure photos are clear</li>
+                        <li>Reject items with hygiene issues</li>
+                    </ul>
+                </div>
+    </div>
+</main>
+
+
+
+
 
     <main class="donate-main">
         <div class="container">
@@ -96,7 +176,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <p>Give your pre-loved clothing a new life and make a sustainable impact</p>
             </div>
 
-            <!-- Success/Error Messages -->
+        
             <?php if (isset($success_message)): ?>
                 <div class="alert alert-success" style="background: #d4ffd4; padding: 15px; border-radius: 5px; margin: 20px 0; border: 1px solid #00ff00;">
                     <?php echo $success_message; ?>
@@ -111,7 +191,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
             <div class="donate-content">
                 <div class="donate-form-container">
-                    <!-- FORM SUBMITS TO THIS SAME PAGE -->
+                   
                     <form class="donate-form" method="POST" enctype="multipart/form-data">
                        
                         <div class="form-section">
@@ -239,6 +319,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         </div>
     </footer>
 
-    <script src="js/donate.js"></script>
+   
 </body>
 </html>
