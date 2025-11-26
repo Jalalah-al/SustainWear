@@ -7,7 +7,7 @@ if (isset($_POST['signUp'])) {
    
     $username = trim($_POST['username']);
     $email = trim($_POST['email']);
-    $userType = $_POST['userType']; // ADD THIS LINE
+    $userType = $_POST['userType']; 
     $password = $_POST['password'];
     $confirmPassword = $_POST['confirmPassword'];
     
@@ -53,23 +53,22 @@ if (isset($_POST['signUp'])) {
     
     $hashed_password = password_hash($password, PASSWORD_DEFAULT);
     
-    // Start transaction to ensure both operations succeed or fail together
+
     $conn->begin_transaction();
     
     try {
-        // Insert into users table - USE THE userType FROM FORM
+     
         $stmt = $conn->prepare("INSERT INTO users (username, email, password, userType) VALUES (?, ?, ?, ?)");
-        $stmt->bind_param("ssss", $username, $email, $hashed_password, $userType); // CHANGE TO 4 PARAMETERS
+        $stmt->bind_param("ssss", $username, $email, $hashed_password, $userType); 
         
         if (!$stmt->execute()) {
             throw new Exception("User creation failed: " . $stmt->execute());
         }
         
-        // Get the last inserted user_id
         $user_id = $conn->insert_id;
         $stmt->close();
         
-        // Insert into accounts table with EMPTY STRINGS instead of NULL
+
         $stmt_account = $conn->prepare("INSERT INTO accounts (user_id, profilePicture, bio) VALUES (?, '', '')");
         $stmt_account->bind_param("i", $user_id);
         
@@ -79,7 +78,6 @@ if (isset($_POST['signUp'])) {
         
         $stmt_account->close();
         
-        // Commit the transaction
         $conn->commit();
         
         echo "
@@ -106,7 +104,7 @@ if (isset($_POST['signUp'])) {
         ";
         
     } catch (Exception $e) {
-        // Rollback the transaction on error
+       
         $conn->rollback();
         echo "Error: " . $e->getMessage() . " <a href='../SignUp.php'>Try again</a>";
     }

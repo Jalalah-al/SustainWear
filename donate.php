@@ -4,9 +4,9 @@ include 'backend/session.php';
 
 $conn = connectDB();
 
-// Process form submission first
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Enable error reporting
+  
     error_reporting(E_ALL);
     ini_set('display_errors', 1);
     
@@ -24,9 +24,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $clothing_type = $_POST['clothingType'];
     $item_condition = $_POST['condition'];
     $description = $_POST['description'];
-    $account_id = 1; // Required by your table
+    $account_id = 1; 
 
-    // Create uploads directory if it doesn't exist
     $upload_dir = "uploads/";
     if (!is_dir($upload_dir)) {
         mkdir($upload_dir, 0755, true);
@@ -34,7 +33,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     $image_path = '';
     if (!empty($_FILES['images']['name'][0])) {
-        // Only use first image since your column is varchar(255)
+      
         $file_name = $_FILES['images']['name'][0];
         $file_tmp = $_FILES['images']['tmp_name'][0];
         
@@ -46,7 +45,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
     }
 
-    // CORRECT SQL - matches your table structure
     $sql = "INSERT INTO donations (account_id, clothing_type, item_condition, description, images) 
             VALUES (?, ?, ?, ?, ?)";
 
@@ -257,7 +255,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     </form>
                 </div>
 
-                <!-- Rest of your HTML remains the same -->
                 <div class="donate-sidebar">
                     <div class="impact-calculator">
                         <h3>Your Impact</h3>
