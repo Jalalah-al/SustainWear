@@ -48,7 +48,6 @@ $contact_active = ($current_page == 'ContactUs.php') ? 'active' : '';
         <ul class="nav-menu">
             <li><a href="index.php" class="nav-link <?php echo $home_active; ?>">HOME</a></li>
             <li><a href="AboutUs.php" class="nav-link <?php echo $about_active; ?>">ABOUT US</a></li>
-            <li><a href="donate.php" class="nav-link <?php echo $donate_active; ?>">DONATE</a></li>
             <li><a href="Legal.php" class="nav-link <?php echo $legal_active; ?>">LEGAL</a></li>
             <li><a href="ContactUs.php" class="nav-link <?php echo $contact_active; ?>">CONTACT US</a></li>
         </ul>

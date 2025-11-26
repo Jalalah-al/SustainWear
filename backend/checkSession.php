@@ -42,4 +42,5 @@ if ($isLoggedIn) {
         $conn->close();
     }
 }
+
 ?>

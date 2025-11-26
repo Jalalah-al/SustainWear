@@ -2,6 +2,19 @@
 require 'backend/connect.php';
 include 'backend/session.php';
 
+
+// //this part will log the user out if they are not logged in (security purposes)
+// while(!$isLoggedIn){
+//     $path = "SignIn.php"; 
+// session_start(); //must start a session in order to use session in this page.
+// if (!isset($_SESSION['user_id'])){
+//   session_unset();
+//   session_destroy();
+//   header("Location:".$path);//return to the login page
+// }
+// }
+// el
+
 $conn = connectDB();
 
 
