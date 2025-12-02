@@ -3,13 +3,14 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-if (!isset($_SESSION['user_id'])) {
-    header("Location: login.php");
+if (isset($_SESSION['user_id'])) {
+    $user_id = $_SESSION['user_id'];
+    include 'backend/checkSession.php';
+}
+else {
+    header("Location: SignIn.php");
     exit();
 }
-
-$user_id = $_SESSION['user_id'];
-$userType = isset($_SESSION['user_type']) ? $_SESSION['user_type'] : 'donor';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     require 'backend/connect.php';
