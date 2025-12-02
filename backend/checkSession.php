@@ -34,6 +34,11 @@ if ($isLoggedIn) {
             $account_id = $result['account_id'];
             $email = $result['email'];
             $userType = $result['userType'];
+            $clothing_type = $result['clothing_type'];
+            $item_condition = $result['item_condition'];
+            $description = $result['description'];
+            $images = $result['images'];
+            $created_at = $result['created_at'];
      
         } else {
             echo "Error: No data found for user.";
