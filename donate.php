@@ -1,43 +1,24 @@
 <?php
-require 'backend/connect.php';
-include 'backend/session.php';
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 
+if (!isset($_SESSION['user_id'])) {
+    header("Location: login.php");
+    exit();
+}
 
-// //this part will log the user out if they are not logged in (security purposes)
-// while(!$isLoggedIn){
-//     $path = "SignIn.php"; 
-// session_start(); //must start a session in order to use session in this page.
-// if (!isset($_SESSION['user_id'])){
-//   session_unset();
-//   session_destroy();
-//   header("Location:".$path);//return to the login page
-// }
-// }
-// el
-
-$conn = connectDB();
-
+$user_id = $_SESSION['user_id'];
+$userType = isset($_SESSION['user_type']) ? $_SESSION['user_type'] : 'donor';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-  
-    error_reporting(E_ALL);
-    ini_set('display_errors', 1);
-    
-    $host = "localhost";
-    $username = "root";
-    $password = "";
-    $database = "sustainwear";
-
-    $conn = new mysqli($host, $username, $password, $database);
-
-    if ($conn->connect_error) {
-        die("Connection failed: " . $conn->connect_error);
-    }
+    require 'backend/connect.php';
+    $conn = connectDB();
 
     $clothing_type = $_POST['clothingType'];
     $item_condition = $_POST['condition'];
     $description = $_POST['description'];
-    $account_id = 1; 
+    $account_id = $user_id;
 
     $upload_dir = "uploads/";
     if (!is_dir($upload_dir)) {
@@ -46,20 +27,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     $image_path = '';
     if (!empty($_FILES['images']['name'][0])) {
-      
         $file_name = $_FILES['images']['name'][0];
         $file_tmp = $_FILES['images']['tmp_name'][0];
-        
         $new_file_name = uniqid() . "_" . $file_name;
         $destination = $upload_dir . $new_file_name;
-  
+        
         if (move_uploaded_file($file_tmp, $destination)) {
             $image_path = $destination;
         }
     }
 
-    $sql = "INSERT INTO donations (account_id, clothing_type, item_condition, description, images) 
-            VALUES (?, ?, ?, ?, ?)";
+    $sql = "INSERT INTO donations (account_id, clothing_type, item_condition, description, images, created_at) 
+            VALUES (?, ?, ?, ?, ?, NOW())";
 
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("issss", $account_id, $clothing_type, $item_condition, $description, $image_path);
@@ -74,14 +53,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $conn->close();
 }
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/style.css">
-     <script src="js/donate.js"></script>
-       <link rel ="icon" href="images/logo.png" sizes="16x16">
+    <script src="js/donate.js"></script>
+    <link rel="icon" href="images/logo.png" sizes="16x16">
     <link rel="stylesheet" href="css/donate.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <title>Donate Clothes | SustainWear</title>
@@ -89,18 +69,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <body>
 
    <?php 
-        include 'backend/checkSession.php';
-
-        if($isLoggedIn){
+        if(isset($user_id)){
             include 'headerAndFooter/loggedInHeader.php';
         }
         else{
             include 'headerAndFooter/header.php';
         }
-        ?>
-
-
-
+   ?>
 
 <?php if($userType === 'charityStaff'): ?>
 <main class="donate-main">
@@ -188,6 +163,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         <li>Reject items with hygiene issues</li>
                     </ul>
                 </div>
+            </div>
+        </div>
     </div>
 </main>
 <?php else: ?>
@@ -342,7 +319,5 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             </div>
         </div>
     </footer>
-
-   
 </body>
 </html>

@@ -2,7 +2,7 @@
 session_start();
 require_once 'backend/connect.php';
 
-//---- this will check if the user is logged in and get any relevant user info//--
+
 
 if (isset($_SESSION['user_id'])) {
     $isLoggedIn = true;
