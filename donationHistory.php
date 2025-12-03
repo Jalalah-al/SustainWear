@@ -1,7 +1,5 @@
 <?php
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
-}
+session_start();
 
 if (!isset($_SESSION['user_id'])) {
     header("Location: login.php");
@@ -13,20 +11,32 @@ $user_id = $_SESSION['user_id'];
 require 'backend/connect.php';
 $conn = connectDB();
 
-$stmt = $conn->prepare("SELECT * FROM donations WHERE account_id = ? ORDER BY created_at DESC");
-$stmt->bind_param("i", $user_id);
-$stmt->execute();
-$result = $stmt->get_result();
+$account_id = null;
+$account_query = "SELECT account_id FROM accounts WHERE user_id = ?";
+if ($stmt = $conn->prepare($account_query)) {
+    $stmt->bind_param("i", $user_id);
+    $stmt->execute();
+    $stmt->bind_result($account_id);
+    $stmt->fetch();
+    $stmt->close();
+}
 
 $userDonations = [];
 $totalDonations = 0;
 
-while ($row = $result->fetch_assoc()) {
-    $userDonations[] = $row;
-}
-$totalDonations = count($userDonations);
+if ($account_id) {
+    $stmt = $conn->prepare("SELECT * FROM donations WHERE account_id = ? ORDER BY created_at DESC");
+    $stmt->bind_param("i", $account_id);
+    $stmt->execute();
+    $result = $stmt->get_result();
 
-$stmt->close();
+    while ($row = $result->fetch_assoc()) {
+        $userDonations[] = $row;
+    }
+    $totalDonations = count($userDonations);
+    $stmt->close();
+}
+
 $conn->close();
 
 $isLoggedIn = true;
@@ -42,6 +52,41 @@ $isLoggedIn = true;
     <link rel="stylesheet" href="css/donationHistory.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <title>Donation History | SustainWear</title>
+    <style>
+        .status-badge {
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            display: inline-block;
+        }
+        
+        .status-badge.pending {
+            background-color: #FFF3CD;
+            color: #856404;
+            border: 1px solid #FFEEBA;
+        }
+        
+        .status-badge.completed {
+            background-color: #D4EDDA;
+            color: #155724;
+            border: 1px solid #C3E6CB;
+        }
+        
+        .status-badge.rejected {
+            background-color: #F8D7DA;
+            color: #721C24;
+            border: 1px solid #F5C6CB;
+        }
+        
+        .status-badge.approved {
+            background-color: #D1ECF1;
+            color: #0C5460;
+            border: 1px solid #BEE5EB;
+        }
+    </style>
 </head>
 <body>
 
@@ -110,6 +155,20 @@ $isLoggedIn = true;
                         if (!empty($donation['images'])) {
                             $image = $donation['images'];
                         }
+                        
+                        $status = isset($donation['status']) ? strtolower($donation['status']) : 'pending';
+                        $status_text = ucfirst($status);
+                        $status_class = $status;
+                        
+                        if ($status == 'pending') {
+                            $status_text = 'Pending Review';
+                        } elseif ($status == 'approved') {
+                            $status_text = 'Approved';
+                        } elseif ($status == 'rejected') {
+                            $status_text = 'Rejected';
+                        } elseif ($status == 'completed') {
+                            $status_text = 'Completed';
+                        }
                         ?>
                         
                         <div class="donation-item" data-type="<?php echo htmlspecialchars($type); ?>">
@@ -128,9 +187,19 @@ $isLoggedIn = true;
                                 <p class="donation-description"><?php echo htmlspecialchars($donation['description']); ?></p>
                             </div>
                             <div class="donation-status">
-                                <span class="status-badge completed">Completed</span>
+                                <span class="status-badge <?php echo $status_class; ?>"><?php echo $status_text; ?></span>
                                 <div class="impact-info">
-                                    <small>Thank you for your donation!</small>
+                                    <?php if ($status == 'pending'): ?>
+                                        <small>Your donation is awaiting review by charity staff.</small>
+                                    <?php elseif ($status == 'approved'): ?>
+                                        <small>Your donation has been approved and will be listed.</small>
+                                    <?php elseif ($status == 'rejected'): ?>
+                                        <small>Your donation did not meet our guidelines.</small>
+                                    <?php elseif ($status == 'completed'): ?>
+                                        <small>Thank you for your donation!</small>
+                                    <?php else: ?>
+                                        <small>Status: <?php echo $status_text; ?></small>
+                                    <?php endif; ?>
                                 </div>
                             </div>
                         </div>

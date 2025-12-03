@@ -1,58 +1,92 @@
 <?php
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
-}
+session_start();
 
-if (isset($_SESSION['user_id'])) {
-    $user_id = $_SESSION['user_id'];
-    include 'backend/checkSession.php';
-}
-else {
+if (!isset($_SESSION['user_id'])) {
     header("Location: SignIn.php");
     exit();
 }
 
+$user_id = $_SESSION['user_id'];
+
+require 'backend/connect.php';
+$conn = connectDB();
+
+$error_message = "";
+$success_message = "";
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    require 'backend/connect.php';
-    $conn = connectDB();
-
-    $clothing_type = $_POST['clothingType'];
-    $item_condition = $_POST['condition'];
-    $description = $_POST['description'];
-    $account_id = $user_id;
-
-    $upload_dir = "uploads/";
-    if (!is_dir($upload_dir)) {
-        mkdir($upload_dir, 0755, true);
-    }
-
-    $image_path = '';
-    if (!empty($_FILES['images']['name'][0])) {
-        $file_name = $_FILES['images']['name'][0];
-        $file_tmp = $_FILES['images']['tmp_name'][0];
-        $new_file_name = uniqid() . "_" . $file_name;
-        $destination = $upload_dir . $new_file_name;
-        
-        if (move_uploaded_file($file_tmp, $destination)) {
-            $image_path = $destination;
+    $get_account_sql = "SELECT account_id FROM accounts WHERE user_id = ?";
+    $get_stmt = $conn->prepare($get_account_sql);
+    $get_stmt->bind_param("i", $user_id);
+    $get_stmt->execute();
+    $get_stmt->bind_result($account_id);
+    $get_stmt->fetch();
+    $get_stmt->close();
+    
+    if (!$account_id) {
+        $create_account_sql = "INSERT INTO accounts (user_id) VALUES (?)";
+        $create_stmt = $conn->prepare($create_account_sql);
+        $create_stmt->bind_param("i", $user_id);
+        if ($create_stmt->execute()) {
+            $account_id = $create_stmt->insert_id;
+            $success_message = "Account created successfully! Now processing your donation...";
+        } else {
+            $error_message = "Error creating account: " . $create_stmt->error;
         }
+        $create_stmt->close();
     }
+    
+    if ($account_id) {
+        $clothing_type = $_POST['clothingType'];
+        $item_condition = $_POST['condition'];
+        $description = $_POST['description'];
+        
+        $upload_dir = "uploads/";
+        if (!is_dir($upload_dir)) {
+            mkdir($upload_dir, 0755, true);
+        }
 
-    $sql = "INSERT INTO donations (account_id, clothing_type, item_condition, description, images, created_at) 
-            VALUES (?, ?, ?, ?, ?, NOW())";
+        $image_path = '';
+        if (!empty($_FILES['images']['name'][0])) {
+            $file_name = $_FILES['images']['name'][0];
+            $file_tmp = $_FILES['images']['tmp_name'][0];
+            $new_file_name = uniqid() . "_" . $file_name;
+            $destination = $upload_dir . $new_file_name;
+            
+            if (move_uploaded_file($file_tmp, $destination)) {
+                $image_path = $destination;
+            }
+        }
 
-    $stmt = $conn->prepare($sql);
-    $stmt->bind_param("issss", $account_id, $clothing_type, $item_condition, $description, $image_path);
+        $sql = "INSERT INTO donations (account_id, clothing_type, item_condition, description, images, created_at, status) 
+                VALUES (?, ?, ?, ?, ?, NOW(), 'pending')";
 
-    if ($stmt->execute()) {
-        $success_message = "Donation submitted successfully!";
-    } else {
-        $error_message = "Error: " . $stmt->error;
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("issss", $account_id, $clothing_type, $item_condition, $description, $image_path);
+
+        if ($stmt->execute()) {
+            $success_message = "Donation submitted successfully!";
+        } else {
+            $error_message = "Error: " . $stmt->error;
+        }
+
+        $stmt->close();
     }
-
-    $stmt->close();
-    $conn->close();
 }
+
+$userType = 'donor';
+$user_type_sql = "SELECT userType FROM users WHERE user_id = ?";
+if ($stmt = $conn->prepare($user_type_sql)) {
+    $stmt->bind_param("i", $user_id);
+    $stmt->execute();
+    $stmt->bind_result($db_user_type);
+    if ($stmt->fetch()) {
+        $userType = $db_user_type;
+    }
+    $stmt->close();
+}
+
+$conn->close();
 ?>
 
 <!DOCTYPE html>
@@ -70,12 +104,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <body>
 
    <?php 
-        if(isset($user_id)){
-            include 'headerAndFooter/loggedInHeader.php';
-        }
-        else{
-            include 'headerAndFooter/header.php';
-        }
+        include 'headerAndFooter/loggedInHeader.php';
    ?>
 
 <?php if($userType === 'charityStaff'): ?>
@@ -87,13 +116,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         </div>
 
         <div class="donate-content">
-
             <div class="donate-form-container">
-               
                 <form class="donate-form" id="reviewDonationsForm">
                     <div class="form-section">
                         <h3>Review Incoming Donations</h3>
-
                         <div class="form-row">
                             <div class="form-group">
                                 <label for="reviewItem">Item</label>
@@ -103,7 +129,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                     <option value="shoes">Running Shoes — Excellent</option>
                                 </select>
                             </div>
-
                             <div class="form-group">
                                 <label for="decision">Decision</label>
                                 <select id="decision" name="decision">
@@ -113,23 +138,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                 </select>
                             </div>
                         </div>
-
                         <div class="form-group">
                             <label for="staffNotes">Staff Notes</label>
                             <textarea id="staffNotes" rows="3" placeholder="Add notes about approval/rejection…"></textarea>
                         </div>
-
                         <button type="submit" class="btn-donate" id="charity-btn">Submit Review</button>
                     </div>
                 </form>
             </div>
-
         
             <div class="donate-sidebar">
-
                 <div class="impact-calculator">
                     <h3>Staff Dashboard</h3>
-
                     <div class="impact-item">
                         <div class="impact-icon"></div>
                         <div class="impact-text">
@@ -137,7 +157,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                             <p>142 items received</p>
                         </div>
                     </div>
-
                     <div class="impact-item">
                         <div class="impact-icon"></div>
                         <div class="impact-text">
@@ -145,7 +164,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                             <p>24 items awaiting approval</p>
                         </div>
                     </div>
-
                     <div class="impact-item">
                         <div class="impact-icon"></div>
                         <div class="impact-text">
@@ -154,7 +172,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         </div>
                     </div>
                 </div>
-
                 <div class="donation-tips">
                     <h3>Staff Tips</h3>
                     <ul>
@@ -169,23 +186,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     </div>
 </main>
 <?php else: ?>
-
-
     <main class="donate-main">
         <div class="container">
             <div class="donate-header">
                 <h1>Donate Your Clothes</h1>
                 <p>Give your pre-loved clothing a new life and make a sustainable impact</p>
             </div>
-
         
-            <?php if (isset($success_message)): ?>
+            <?php if (!empty($success_message)): ?>
                 <div class="alert alert-success" style="background: #d4ffd4; padding: 15px; border-radius: 5px; margin: 20px 0; border: 1px solid #00ff00;">
                     <?php echo $success_message; ?>
                 </div>
             <?php endif; ?>
             
-            <?php if (isset($error_message)): ?>
+            <?php if (!empty($error_message)): ?>
                 <div class="alert alert-error" style="background: #ffd4d4; padding: 15px; border-radius: 5px; margin: 20px 0; border: 1px solid #ff0000;">
                     <?php echo $error_message; ?>
                 </div>
@@ -193,9 +207,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
             <div class="donate-content">
                 <div class="donate-form-container">
-                   
                     <form class="donate-form" method="POST" enctype="multipart/form-data">
-                       
                         <div class="form-section">
                             <h3>Clothing Details</h3>
                             <div class="form-row">
@@ -222,13 +234,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                     </select>
                                 </div>
                             </div>
-
                             <div class="form-group">
                                 <label for="description">Description *</label>
                                 <textarea id="description" name="description" rows="3" placeholder="Describe the clothing item, brand, color, and material..." required></textarea>
                             </div>
                         </div>
-
                         <div class="form-section">
                             <h3>Upload Photos</h3>
                             <div class="image-upload-container">
@@ -241,11 +251,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                 <div class="image-preview" id="imagePreview"></div>
                             </div>
                         </div>
-
                         <button type="submit" class="btn-donate">Submit Donation</button>
                     </form>
                 </div>
-
                 <div class="donate-sidebar">
                     <div class="impact-calculator">
                         <h3>Your Impact</h3>
@@ -271,7 +279,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                             </div>
                         </div>
                     </div>
-
                     <div class="donation-tips">
                         <h3>Donation Tips</h3>
                         <ul>
