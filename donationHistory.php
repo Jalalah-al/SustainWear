@@ -1,20 +1,22 @@
 <?php
 session_start();
 
+// Check if user is logged in
 if (!isset($_SESSION['user_id'])) {
     header("Location: login.php");
     exit();
 }
 
-$user_id = $_SESSION['user_id'];
+$user_id = $_SESSION['user_id']; // Get user ID from session
 
 require 'backend/connect.php';
-$conn = connectDB();
+$conn = connectDB(); // Connect to database
 
+// Get account_id from accounts table using user_id
 $account_id = null;
 $account_query = "SELECT account_id FROM accounts WHERE user_id = ?";
 if ($stmt = $conn->prepare($account_query)) {
-    $stmt->bind_param("i", $user_id);
+    $stmt->bind_param("i", $user_id); // Use session user_id to find account_id
     $stmt->execute();
     $stmt->bind_result($account_id);
     $stmt->fetch();
@@ -24,12 +26,16 @@ if ($stmt = $conn->prepare($account_query)) {
 $userDonations = [];
 $totalDonations = 0;
 
+// If account_id was found, fetch donations for this account
 if ($account_id) {
+    // THIS IS THE IMPORTANT QUERY THAT FETCHES DONATIONS:
+    // It gets all donations where account_id matches the user's account_id
     $stmt = $conn->prepare("SELECT * FROM donations WHERE account_id = ? ORDER BY created_at DESC");
-    $stmt->bind_param("i", $account_id);
+    $stmt->bind_param("i", $account_id); // Use the account_id we found
     $stmt->execute();
     $result = $stmt->get_result();
 
+    // Store each donation in an array
     while ($row = $result->fetch_assoc()) {
         $userDonations[] = $row;
     }
@@ -37,7 +43,7 @@ if ($account_id) {
     $stmt->close();
 }
 
-$conn->close();
+$conn->close(); // Close database connection
 
 $isLoggedIn = true;
 ?>

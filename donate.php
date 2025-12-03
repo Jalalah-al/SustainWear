@@ -14,6 +14,7 @@ $conn = connectDB();
 $error_message = "";
 $success_message = "";
 
+// THIS PART HANDLES SUBMITTING DONATIONS TO THE DATABASE
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $get_account_sql = "SELECT account_id FROM accounts WHERE user_id = ?";
     $get_stmt = $conn->prepare($get_account_sql);
@@ -58,6 +59,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             }
         }
 
+        // THIS IS THE IMPORTANT LINE THAT SAVES TO DATABASE
+        // IT INSERTS THE DONATION WITH STATUS 'pending'
         $sql = "INSERT INTO donations (account_id, clothing_type, item_condition, description, images, created_at, status) 
                 VALUES (?, ?, ?, ?, ?, NOW(), 'pending')";
 
@@ -74,6 +77,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 }
 
+// THIS PART CHECKS USER TYPE (donor or charity staff)
 $userType = 'donor';
 $user_type_sql = "SELECT userType FROM users WHERE user_id = ?";
 if ($stmt = $conn->prepare($user_type_sql)) {
