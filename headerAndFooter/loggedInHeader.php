@@ -1,4 +1,5 @@
 <?php 
+include 'backend/checkSession.php';
 $current_page = basename($_SERVER['PHP_SELF']);
 
 $home_active = ($current_page == 'index.php') ? 'active' : '';
@@ -47,12 +48,12 @@ $contact_active = ($current_page == 'ContactUs.php') ? 'active' : '';
         </div>
         <ul class="nav-menu">
             <li><a href="index.php" class="nav-link <?php echo $home_active; ?>">HOME</a></li>
-            <!-- <li><a href="AboutUs.php" class="nav-link <?php echo $about_active; ?>">ABOUT US</a></li> -->
             <li><a href="donate.php" class="nav-link <?php echo $donate_active; ?>">DONATIONS</a></li>
-            <li><a href="donationHistory.php" class="nav-link <?php echo $contact_active; ?>">DONATION HISTORY</a></li>
-            <!-- <li><a href="Legal.php" class="nav-link <?php echo $legal_active; ?>">LEGAL</a></li> -->
-            <!-- <li><a href="ContactUs.php" class="nav-link <?php echo $contact_active; ?>">CONTACT US</a></li> -->
             <li><a href="profile.php" class="nav-link <?php echo $contact_active; ?>">PROFILE</a></li>
+            <?php if ($userType === 'donor'): ?>
+            <li><a href="donationHistory.php" class="nav-link <?php echo $contact_active; ?>">DONATION HISTORY</a></li>
+            <?php endif; ?>
+            <li><a href="ContactUs.php" class="nav-link <?php echo $contact_active; ?>">CONTACT US</a></li>
         </ul>
 
         <div class="nav-actions">

@@ -77,18 +77,21 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 }
 
-// THIS PART CHECKS USER TYPE (donor or charity staff)
-$userType = 'donor';
-$user_type_sql = "SELECT userType FROM users WHERE user_id = ?";
-if ($stmt = $conn->prepare($user_type_sql)) {
-    $stmt->bind_param("i", $user_id);
-    $stmt->execute();
-    $stmt->bind_result($db_user_type);
-    if ($stmt->fetch()) {
-        $userType = $db_user_type;
-    }
-    $stmt->close();
-}
+
+//backend/checksession.php already checks this so i commented it out
+
+// // THIS PART CHECKS USER TYPE (donor or charity staff)
+// $userType = 'donor';
+// $user_type_sql = "SELECT userType FROM users WHERE user_id = ?";
+// if ($stmt = $conn->prepare($user_type_sql)) {
+//     $stmt->bind_param("i", $user_id);
+//     $stmt->execute();
+//     $stmt->bind_result($db_user_type);
+//     if ($stmt->fetch()) {
+//         $userType = $db_user_type;
+//     }
+//     $stmt->close();
+// }
 
 $conn->close();
 ?>
