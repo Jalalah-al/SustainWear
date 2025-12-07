@@ -2,8 +2,6 @@
 session_start();
 require_once 'backend/connect.php';
 
-
-
 if (isset($_SESSION['user_id'])) {
     $isLoggedIn = true;
     $user_ID = $_SESSION['user_id']; 
@@ -14,38 +12,59 @@ if (isset($_SESSION['user_id'])) {
 
 $username = null;
 $account_id = null;
-
+$pendingDonationsCount = 0;
 
 if ($isLoggedIn) {
     $conn = connectDB();
     
     if ($conn) {
-        
-        $query = mysqli_query($conn, "SELECT *
+        // get the user info
+        $userQuery = mysqli_query($conn, "SELECT u.*, a.* 
                         FROM users AS u
                         INNER JOIN accounts AS a ON u.user_id = a.user_id 
-                        LEFT JOIN donations AS d ON d.account_id = a.account_id
-                        WHERE u.user_id = $user_ID" );
+                        WHERE u.user_id = $user_ID LIMIT 1" );
 
-        if ($query && mysqli_num_rows($query) > 0) {
-            $result = mysqli_fetch_assoc($query);
+        if ($userQuery && mysqli_num_rows($userQuery) > 0) {
+            $result = mysqli_fetch_assoc($userQuery);
             
             $username = $result['username'];
             $account_id = $result['account_id'];
             $email = $result['email'];
             $userType = $result['userType'];
-            $clothing_type = $result['clothing_type'];
-            $item_condition = $result['item_condition'];
-            $description = $result['description'];
-            $images = $result['images'];
-            $created_at = $result['created_at'];
-     
-        } else {
-            echo "Error: No data found for user.";
+        }
+        
+    // Count pending donations
+$pendingQuery = mysqli_query($conn, "SELECT COUNT(*) as pending_count 
+                    FROM donations 
+                    WHERE status = 'pending'");
+$pendingResult = mysqli_fetch_assoc($pendingQuery);
+$pendingDonationsCount = $pendingResult['pending_count'];
+
+// Count all donations (regardless of status)
+$totalQuery = mysqli_query($conn, "SELECT COUNT(*) as total_count 
+                    FROM donations");
+$totalResult = mysqli_fetch_assoc($totalQuery);
+$totalDonationsCount = $totalResult['total_count'];
+        
+        // get users latest donation ((if it exists))
+        if ($account_id) {
+            $donationQuery = mysqli_query($conn, "SELECT * 
+                                    FROM donations 
+                                    WHERE account_id = $account_id 
+                                    ORDER BY created_at DESC LIMIT 1");
+            
+            if ($donationQuery && mysqli_num_rows($donationQuery) > 0) {
+                $donationResult = mysqli_fetch_assoc($donationQuery);
+                $clothing_type = $donationResult['clothing_type'];
+                $item_condition = $donationResult['item_condition'];
+                $description = $donationResult['description'];
+                $images = $donationResult['images'];
+                $created_at = $donationResult['created_at'];
+                $status = $donationResult['status'];
+            }
         }
         
         $conn->close();
     }
 }
-
 ?>

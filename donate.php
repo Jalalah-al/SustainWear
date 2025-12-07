@@ -14,6 +14,37 @@ $conn = connectDB();
 $error_message = "";
 $success_message = "";
 
+if (isset($_SESSION['success_message'])) {
+    $success_message = $_SESSION['success_message'];
+    unset($_SESSION['success_message']);
+}
+
+if (isset($_SESSION['error_message'])) {
+    $error_message = $_SESSION['error_message'];
+    unset($_SESSION['error_message']);
+}
+
+///charitystaff accepting/rejecting donations part
+$pendingQuery = mysqli_query($conn, "SELECT donations_ID, clothing_type, item_condition 
+                                     FROM donations 
+                                     WHERE status = 'pending'
+                                     ORDER BY created_at DESC");
+
+$pendingDonations = [];
+if ($pendingQuery && mysqli_num_rows($pendingQuery) > 0) {
+    while ($row = mysqli_fetch_assoc($pendingQuery)) {
+        $pendingDonations[] = $row;
+    }
+}
+
+
+
+
+
+
+
+
+
 // THIS PART HANDLES SUBMITTING DONATIONS TO THE DATABASE
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $get_account_sql = "SELECT account_id FROM accounts WHERE user_id = ?";
@@ -75,23 +106,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         $stmt->close();
     }
+    
 }
 
 
-//backend/checksession.php already checks this so i commented it out
 
-// // THIS PART CHECKS USER TYPE (donor or charity staff)
-// $userType = 'donor';
-// $user_type_sql = "SELECT userType FROM users WHERE user_id = ?";
-// if ($stmt = $conn->prepare($user_type_sql)) {
-//     $stmt->bind_param("i", $user_id);
-//     $stmt->execute();
-//     $stmt->bind_result($db_user_type);
-//     if ($stmt->fetch()) {
-//         $userType = $db_user_type;
-//     }
-//     $stmt->close();
-// }
 
 $conn->close();
 ?>
@@ -114,45 +133,76 @@ $conn->close();
         include 'headerAndFooter/loggedInHeader.php';
    ?>
 
+
 <?php if($userType === 'charityStaff'): ?>
 <main class="donate-main">
     <div class="container">
         <div class="donate-header">
             <h1>Charity Staff Panel</h1>
             <p>Review donations, create listings, and manage activity</p>
+             <button>View Donations <span><?php echo $pendingDonationsCount ?? 0; ?></span> </button>
         </div>
 
-        <div class="donate-content">
-            <div class="donate-form-container">
-                <form class="donate-form" id="reviewDonationsForm">
-                    <div class="form-section">
-                        <h3>Review Incoming Donations</h3>
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="reviewItem">Item</label>
-                                <select id="reviewItem" name="reviewItem">
-                                    <option value="">Select pending item</option>
-                                    <option value="shirt">Blue Shirt — Good</option>
-                                    <option value="shoes">Running Shoes — Excellent</option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label for="decision">Decision</label>
-                                <select id="decision" name="decision">
-                                    <option value="">Choose</option>
-                                    <option value="approve">Approve</option>
-                                    <option value="reject">Reject</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="staffNotes">Staff Notes</label>
-                            <textarea id="staffNotes" rows="3" placeholder="Add notes about approval/rejection…"></textarea>
-                        </div>
-                        <button type="submit" class="btn-donate" id="charity-btn">Submit Review</button>
-                    </div>
-                </form>
+<?php if (!empty($success_message)): ?>
+    <div class="alert alert-success" style="background: #d4ffd4; color: #006600; padding: 15px; border-radius: 5px; margin: 20px 0; border: 1px solid #00cc00;">
+        ✅ <?php echo htmlspecialchars($success_message); ?>
+    </div>
+<?php endif; ?>
+
+<?php if (!empty($error_message)): ?>
+    <div class="alert alert-error" style="background: #ffd4d4; color: #660000; padding: 15px; border-radius: 5px; margin: 20px 0; border: 1px solid #cc0000;">
+        ❌ <?php echo htmlspecialchars($error_message); ?>
+    </div>
+<?php endif; ?>
+       
+
+    <div class="donate-content">
+            
+        <div class="donate-form-container">
+    <form class="donate-form" id="reviewDonationsForm" method="POST" action="backend/processReview.php">
+        <div class="form-section">
+            <h3>Review Incoming Donations</h3>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="reviewItem">Item</label>
+                    <select id="reviewItem" name="donations_ID" required>
+                        <option value="" disabled selected>Select pending item</option>
+                        <?php if (!empty($pendingDonations)): ?>
+                            <?php foreach ($pendingDonations as $donation): ?>
+                                <?php 
+                                $displayText = htmlspecialchars($donation['clothing_type']) . " — " . 
+                                            htmlspecialchars(ucfirst($donation['item_condition']));
+                                ?>
+                                <option value="<?php echo $donation['donations_ID']; ?>">
+                                    <?php echo $displayText; ?>
+                                </option>
+                            <?php endforeach; ?>
+                        <?php else: ?>
+                            <option value="">No pending donations</option>
+                        <?php endif; ?>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="decision">Decision</label>
+                    <select id="decision" name="decision" required>
+                        <option value="" disabled selected>Choose</option>
+                        <option value="approve">Approve</option>
+                        <option value="reject">Reject</option>
+                    </select>
+                </div>
             </div>
+           
+            <div class="form-group">
+                <label for="staffNotes">Staff Notes</label>
+                <textarea id="staffNotes" name="staff_notes" rows="3" 
+                          placeholder="Add notes about approval/rejection… (optional)"></textarea>
+            </div>
+            <button type="submit" class="btn-donate" id="charity-btn">Submit Review</button>
+        </div>
+    </form>
+</div>
+
         
             <div class="donate-sidebar">
                 <div class="impact-calculator">
@@ -161,14 +211,14 @@ $conn->close();
                         <div class="impact-icon"></div>
                         <div class="impact-text">
                             <h4>Total Donations</h4>
-                            <p>142 items received</p>
+                            <p> <span><?php echo $totalDonationsCount; ?></span> items received</p>
                         </div>
                     </div>
                     <div class="impact-item">
                         <div class="impact-icon"></div>
                         <div class="impact-text">
                             <h4>Pending Reviews</h4>
-                            <p>24 items awaiting approval</p>
+                            <p> <span><?php echo $pendingDonationsCount; ?></span> items awaiting approval</p>
                         </div>
                     </div>
                     <div class="impact-item">

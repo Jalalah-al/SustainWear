@@ -3,9 +3,9 @@ include 'backend/checkSession.php';
 $current_page = basename($_SERVER['PHP_SELF']);
 
 $home_active = ($current_page == 'index.php') ? 'active' : '';
-$about_active = ($current_page == 'AboutUs.php') ? 'active' : '';
 $donate_active = ($current_page == 'donate.php') ? 'active' : '';
-$legal_active = ($current_page == 'Legal.php') ? 'active' : '';
+$profile_active = ($current_page == 'profile.php') ? 'active' : '';
+$history_active = ($current_page == 'donationHistory.php') ? 'active' : '';
 $contact_active = ($current_page == 'ContactUs.php') ? 'active' : '';
 ?>
 
@@ -33,7 +33,6 @@ $contact_active = ($current_page == 'ContactUs.php') ? 'active' : '';
     background: var(--primary);
 }
 
-
 :root {
     --primary: #2ecc71; 
     --gray: #666;
@@ -49,10 +48,12 @@ $contact_active = ($current_page == 'ContactUs.php') ? 'active' : '';
         <ul class="nav-menu">
             <li><a href="index.php" class="nav-link <?php echo $home_active; ?>">HOME</a></li>
             <li><a href="donate.php" class="nav-link <?php echo $donate_active; ?>">DONATIONS</a></li>
-            <li><a href="profile.php" class="nav-link <?php echo $contact_active; ?>">PROFILE</a></li>
+            <li><a href="profile.php" class="nav-link <?php echo $profile_active; ?>">PROFILE</a></li>
+
             <?php if ($userType === 'donor'): ?>
-            <li><a href="donationHistory.php" class="nav-link <?php echo $contact_active; ?>">DONATION HISTORY</a></li>
+            <li><a href="donationHistory.php" class="nav-link <?php echo $history_active; ?>">DONATION HISTORY</a></li>
             <?php endif; ?>
+
             <li><a href="ContactUs.php" class="nav-link <?php echo $contact_active; ?>">CONTACT US</a></li>
         </ul>
 

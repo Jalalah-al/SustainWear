@@ -27,6 +27,19 @@
     line-height: 1.6;
 }
 
+.donate-header button {
+    margin-top: 1.5rem;
+    padding: 0.8rem 1.5rem;
+    background: var(--primary);
+    color: var(--white);
+    border: none;
+    border-radius: 6px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
 .donate-content {
     max-width: 1000px;
     margin: 0 auto;
