@@ -119,18 +119,7 @@
 
    
 
-  
-   <!-- //--testing//-- -->
-    <?php
-    if($isLoggedIn){
-      echo" you are a {$userType}";
-        echo $clothing_type;
-    }
-    else{
-      echo' <p>You are not logged in.</p>';
-      
-    }
-    ?>
+
 
     <section class="features">
         <div class="container">
