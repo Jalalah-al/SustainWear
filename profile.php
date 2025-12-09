@@ -2,7 +2,7 @@
 session_start();
 
 if (!isset($_SESSION['user_id'])) {
-    header("Location: login.php");
+    header("Location: SignIn.php");
     exit();
 }
 
@@ -93,6 +93,8 @@ $carbon_saved = $stats['total_donations'] * 2.5;
 $water_saved = $stats['total_donations'] * 2700; 
 ?>
 
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -101,6 +103,7 @@ $water_saved = $stats['total_donations'] * 2700;
     <link rel="stylesheet" href="css/style.css">
     <link rel="icon" href="images/logo.png" sizes="16x16">
     <link rel="stylesheet" href="css/profile.css">
+    <script src="js/profile.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <title>My Profile | SustainWear</title>
 </head>
@@ -294,7 +297,5 @@ $water_saved = $stats['total_donations'] * 2700;
             </div>
         </div>
     </footer>
-
-    <script src="js/profile.js"></script>
 </body>
 </html>
