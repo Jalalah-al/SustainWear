@@ -12,7 +12,7 @@ $conn = connectDB();
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $donation_id = $_POST['donations_ID'] ?? null;
     $decision = $_POST['decision'] ?? null;
-    // $staff_notes = $_POST['staff_notes'] ?? ''; //
+
     
     if (!$donation_id || !$decision) {
         $_SESSION['error_message'] = "Please select an item and make a decision.";
