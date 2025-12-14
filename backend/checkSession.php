@@ -17,7 +17,6 @@ if ($isLoggedIn) {
     $conn = connectDB();
     
     if ($conn) {
-        // get the user info
         $userQuery = mysqli_query($conn, "SELECT u.*, a.* 
                         FROM users AS u
                         INNER JOIN accounts AS a ON u.user_id = a.user_id 
@@ -69,20 +68,18 @@ if ($pendingQuery && mysqli_num_rows($pendingQuery) > 0) {
 
 
         
-    // Count pending donations
 $pendingQuery = mysqli_query($conn, "SELECT COUNT(*) as pending_count 
                     FROM donations 
                     WHERE status = 'pending'");
 $pendingResult = mysqli_fetch_assoc($pendingQuery);
 $pendingDonationsCount = $pendingResult['pending_count'];
 
-// Count all donations (regardless of status)
+
 $totalQuery = mysqli_query($conn, "SELECT COUNT(*) as total_count 
                     FROM donations");
 $totalResult = mysqli_fetch_assoc($totalQuery);
 $totalDonationsCount = $totalResult['total_count'];
-        
-        // get users latest donation ((if it exists))
+
         if ($account_id) {
             $donationQuery = mysqli_query($conn, "SELECT * 
                                     FROM donations 
