@@ -27,7 +27,9 @@
     </header>
 
 
+<?php
 
+    ?>
 <?php if($isLoggedIn): ?>
     <section class="hero">
         <div class="hero-content">

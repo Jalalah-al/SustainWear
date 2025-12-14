@@ -1,15 +1,17 @@
 <?php
-session_start();
 
-if (!isset($_SESSION['user_id'])) {
-    header("Location: SignIn.php");
-    exit();
-}
+include 'backend/checkSession.php';
+// session_start();
 
-$user_id = $_SESSION['user_id'];
+// if (!isset($_SESSION['user_id'])) {
+//     header("Location: SignIn.php");
+//     exit();
+// }
 
-require 'backend/connect.php';
-$conn = connectDB();
+// $user_id = $_SESSION['user_id'];
+
+// require 'backend/connect.php';
+// $conn = connectDB();
 
 $error_message = "";
 $success_message = "";
@@ -23,26 +25,6 @@ if (isset($_SESSION['error_message'])) {
     $error_message = $_SESSION['error_message'];
     unset($_SESSION['error_message']);
 }
-
-///charitystaff accepting/rejecting donations part
-$pendingQuery = mysqli_query($conn, "SELECT donations_ID, clothing_type, item_condition 
-                                     FROM donations 
-                                     WHERE status = 'pending'
-                                     ORDER BY created_at DESC");
-
-$pendingDonations = [];
-if ($pendingQuery && mysqli_num_rows($pendingQuery) > 0) {
-    while ($row = mysqli_fetch_assoc($pendingQuery)) {
-        $pendingDonations[] = $row;
-    }
-}
-
-
-
-
-
-
-
 
 
 // THIS PART HANDLES SUBMITTING DONATIONS TO THE DATABASE
@@ -112,7 +94,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 
 
-$conn->close();
+// $conn->close();
 ?>
 
 <!DOCTYPE html>
@@ -123,7 +105,9 @@ $conn->close();
     <link rel="stylesheet" href="css/style.css">
     <script src="js/donate.js"></script>
     <link rel="icon" href="images/logo.png" sizes="16x16">
+    <link rel="stylesheet" href="css/donationHistory.css">
     <link rel="stylesheet" href="css/donate.css">
+    <script src = "js/staffDonations.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <title>Donate Clothes | SustainWear</title>
 </head>
@@ -140,7 +124,7 @@ $conn->close();
         <div class="donate-header">
             <h1>Charity Staff Panel</h1>
             <p>Review donations, create listings, and manage activity</p>
-             <button>View Donations <span><?php echo $pendingDonationsCount ?? 0; ?></span> </button>
+             <button onclick ="viewDonationRequests()" id="viewDonationRequests">View Donation Requests <span><?php echo $pendingDonationsCount ?? 0; ?></span> </button>
         </div>
 
 <?php if (!empty($success_message)): ?>
@@ -157,7 +141,10 @@ $conn->close();
        
 
     <div class="donate-content">
-            
+
+<!-- DONATION REVIEW FORM SECTION -->
+    <div id="donationsReviewForm">
+
         <div class="donate-form-container">
     <form class="donate-form" id="reviewDonationsForm" method="POST" action="backend/processReview.php">
         <div class="form-section">
@@ -202,9 +189,12 @@ $conn->close();
         </div>
     </form>
 </div>
+</div>
 
+
+            <!-- staff dashboard -->
         
-            <div class="donate-sidebar">
+            <div class="donate-sidebar" id="staffDashboard">
                 <div class="impact-calculator">
                     <h3>Staff Dashboard</h3>
                     <div class="impact-item">
@@ -239,7 +229,108 @@ $conn->close();
                     </ul>
                 </div>
             </div>
-        </div>
+
+                        </div>
+
+
+<!-- DONATION FILTER SECTION -->
+
+   <div class="history-controls">
+                <div class="search-box">
+                    <input type="text" placeholder="Search donations..." class="search-input" id="search-input">
+                    <button class="search-btn">🔍</button>
+                </div>
+                <div class="filter-group">
+                    <select class="filter-select" id="type-filter">
+                        <option value="all">All Types</option>
+                        <option value="shirt">Shirts</option>
+                        <option value="pants">Pants</option>
+                        <option value="dress">Dresses</option>
+                        <option value="jacket">Jackets</option>
+                        <option value="shoes">Shoes</option>
+                        <option value="sweater">Sweaters</option>
+                        <option value="t-shirt">T-shirts</option>
+                    </select>
+                </div>
+            </div>
+</div>
+
+    <div id="filterDonationsSection">
+       <div class="donate-form-container">
+   <div class="donate-form">
+        <h3>All Donations</h3>
+
+    <div class="form-group">
+        
+<?php if ($hasApprovedDonations): ?>
+    <div class="approved-donations-container">
+        <?php foreach ($acceptedDonations as $donation): ?>
+            <div class="donation-box">
+                <div class="donation-header">
+                    <h4>Donation ID: <?php echo htmlspecialchars($donation['donations_ID']); ?></h4>
+                    <span class="badge approved">APPROVED</span>
+                </div>
+                
+                <div class="donation-body">
+                    <div class="detail-group">
+                        <div class="detail">
+                            <strong>Item Condition:</strong>
+                            <?php echo htmlspecialchars($donation['item_condition']); ?>
+                        </div>
+                        <div class="detail">
+                            <strong>Clothing Type:</strong>
+                            <?php echo htmlspecialchars($donation['clothing_type']); ?>
+                        </div>
+                        <div class="detail">
+                            <strong>Submitted:</strong>
+                            <?php echo date('F j, Y g:i A', strtotime($donation['created_at'])); ?>
+                        </div>
+                       
+                    </div>
+                    
+                    <?php if (!empty($donation['description'])): ?>
+                        <div class="description">
+                            <strong>Description:</strong>
+                            <p><?php echo htmlspecialchars($donation['description']); ?></p>
+                        </div>
+                    <?php endif; ?>
+                    
+                    <?php if (!empty($donation['images'])): ?>
+                        <div class="image-section">
+                            <strong>Images:</strong>
+                            <?php 
+                            $imagePath = $donation['images'];
+                            if (file_exists($imagePath) && is_file($imagePath)):
+                            ?>
+                                <div class="donation-image">
+                                    <img src="<?php echo $imagePath; ?>" 
+                                         alt="Donated item" 
+                                         style="max-width: 300px; max-height: 200px; border-radius: 5px;">
+                                </div>
+                            <?php else: ?>
+                                <p>Image path: <?php echo htmlspecialchars($imagePath); ?></p>
+                            <?php endif; ?>
+                        </div>
+                    <?php endif; ?>
+                </div>
+            </div>
+        <?php endforeach; ?>
+    </div>
+<?php endif; ?>
+
+   </div>
+   </div>
+
+    </div>
+
+
+
+   
+
+
+
+            
+        
     </div>
 </main>
 <?php else: ?>

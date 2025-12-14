@@ -83,3 +83,156 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 });
+
+
+
+// -----This didn't work so I rewrote it better below-----//// 
+// function viewDonationRequests(){
+
+//     let drf = document.getElementById("donationsReviewForm");
+//     let sd = document.querySelector(".donate-sidebar");
+//     let hc = document.querySelector(".history-controls");
+//     let filtered = document.getElementById("filterDonationsSection");
+//     document.getElementById("viewDonationRequests").innerHTML="Back";
+
+//     filtered.style.display="none";
+//     drf.style.display="block";
+//     sd.style.display= "flex";
+//     sd.style.flexDirection= "column";
+//     sd.style.gap= "1.5rem";
+//     hc.style.display="none";
+
+// }
+
+
+function viewDonationRequests() {
+    let drf = document.getElementById("donationsReviewForm");
+    let sd = document.querySelector(".donate-sidebar");
+    let hc = document.querySelector(".history-controls");
+    let filtered = document.getElementById("filterDonationsSection");
+    let button = document.getElementById("viewDonationRequests");
+
+    const buttonText = button.textContent || button.innerText;
+    
+    if (buttonText.includes("View Donation Requests")) {
+        button.innerHTML = "Back";
+        filtered.style.display = "none";
+        drf.style.display = "block";
+        sd.style.display = "flex";
+        sd.style.flexDirection = "column";
+        sd.style.gap = "1.5rem";
+        hc.style.display = "none";
+    } else {
+        button.innerHTML = "View Donation Requests";
+        filtered.style.display = "block"; 
+        drf.style.display = "none"; 
+        
+        sd.style.display = ""; 
+        sd.style.flexDirection = ""; 
+        sd.style.gap = ""; 
+        
+       
+        hc.style.display = "flex";
+    }
+}
+
+
+
+// function filterDonations() {
+//     const searchInput = document.getElementById('search-input');
+//     const typeFilter = document.getElementById('type-filter');
+//     const donationBoxes = document.querySelectorAll('.donation-box');
+    
+//     const searchTerm = searchInput.value.toLowerCase().trim();
+//     const selectedType = typeFilter.value;
+    
+//     let visibleCount = 0;
+    
+//     donationBoxes.forEach(box => {
+//         // get specific data from the donation box
+//         const donationId = box.querySelector('h4')?.textContent || '';
+//         const clothingType = box.querySelector('.detail:nth-child(2)')?.textContent || '';
+//         const condition = box.querySelector('.detail:nth-child(1)')?.textContent || '';
+//         const description = box.querySelector('.description p')?.textContent || '';
+//         const date = box.querySelector('.detail:nth-child(3)')?.textContent || '';
+        
+//         // check type filter
+//         const typeMatch = selectedType === 'all' || 
+//                          clothingType.toLowerCase().includes(selectedType);
+        
+//         // check search term 
+//         let searchMatch = true;
+//         if (searchTerm) {
+//             searchMatch = donationId.toLowerCase().includes(searchTerm) ||
+//                          clothingType.toLowerCase().includes(searchTerm) ||
+//                          condition.toLowerCase().includes(searchTerm) ||
+//                          description.toLowerCase().includes(searchTerm) ||
+//                          date.toLowerCase().includes(searchTerm);
+//         }
+        
+//         // show or hide based on filters
+//         if (typeMatch && searchMatch) {
+//             box.style.display = 'block';
+//             box.classList.remove('hidden');
+//             visibleCount++;
+//         } else {
+//             box.style.display = 'none';
+//             box.classList.add('hidden');
+//         }
+//     });
+    
+//     // ---- show message if no results--////
+//     const container = document.querySelector('.approved-donations-container');
+//     let noResultsMsg = container.querySelector('.no-results-message');
+    
+//     if (visibleCount === 0) {
+//         if (!noResultsMsg) {
+//             noResultsMsg = document.createElement('div');
+//             noResultsMsg.className = 'no-results-message';
+//             noResultsMsg.textContent = 'No donations match your filters.';
+//             container.appendChild(noResultsMsg);
+//         }
+//     } else if (noResultsMsg) {
+//         noResultsMsg.remove();
+//     }
+// }
+
+// // ---EVENT LISTNER WITH ENTER KEY SUPPORTS----///
+// document.addEventListener('DOMContentLoaded', function() {
+//     const searchInput = document.getElementById('search-input');
+//     const typeFilter = document.getElementById('type-filter');
+//     const searchBtn = document.querySelector('.search-btn');
+    
+//     if (searchInput) {
+//         searchInput.addEventListener('input', filterDonations);
+//         searchInput.addEventListener('keypress', function(e) {
+//             if (e.key === 'Enter') {
+//                 filterDonations();
+//             }
+//         });
+//     }
+    
+//     if (typeFilter) {
+//         typeFilter.addEventListener('change', filterDonations);
+//     }
+    
+//     if (searchBtn) {
+//         searchBtn.addEventListener('click', filterDonations);
+//     }
+    
+   
+//     filterDonations();
+// });
+
+
+
+// const clearFiltersBtn = document.getElementById('clear-filters');
+// if (clearFiltersBtn) {
+//     clearFiltersBtn.addEventListener('click', function() {
+//         document.getElementById('search-input').value = '';
+//         document.getElementById('type-filter').value = 'all';
+//         filterDonations();
+//     });
+// }
+
+    

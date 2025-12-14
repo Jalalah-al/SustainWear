@@ -391,7 +391,7 @@ body {
     color: var(--gray-light);
 }
 
-
+/* MOBILE RESPONSIVE STYLES */
 @media (max-width: 768px) {
     .navbar {
         flex-direction: column;

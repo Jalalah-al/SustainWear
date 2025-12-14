@@ -15,7 +15,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // $staff_notes = $_POST['staff_notes'] ?? ''; //
     
     if (!$donation_id || !$decision) {
-        $_SESSION['error_message'] = "Please select an item and make a decision.";
+        $_SESSION['error_message'] = "Please select a valid item and make a decision.";
         header("Location: ../donate.php");
         exit();
     }

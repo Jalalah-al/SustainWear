@@ -1,13 +1,12 @@
  <?php
 session_start();
-require_once 'backend/connect.php';
+require_once 'connect.php';
 
 if (isset($_SESSION['user_id'])) {
     $isLoggedIn = true;
     $user_ID = $_SESSION['user_id']; 
 } else {
-    $isLoggedIn = false;
-    $user_ID = null;
+    header("Location: SignIn.php");
 }
 
 $username = null;
@@ -32,6 +31,43 @@ if ($isLoggedIn) {
             $email = $result['email'];
             $userType = $result['userType'];
         }
+
+
+
+
+
+// Get approved donations
+$acceptedDonationsQuery = mysqli_query($conn, "SELECT * 
+                                               FROM donations 
+                                               WHERE status = 'approved'
+                                               ORDER BY created_at DESC");
+
+$acceptedDonations = [];
+if ($acceptedDonationsQuery) {
+    while ($row = mysqli_fetch_assoc($acceptedDonationsQuery)) {
+        $acceptedDonations[] = $row;
+    }
+}
+
+// Boolean based on whether array has items
+$hasApprovedDonations = !empty($acceptedDonations);
+
+
+
+///charitystaff accepting/rejecting donations part
+$pendingQuery = mysqli_query($conn, "SELECT donations_ID, clothing_type, item_condition 
+                                     FROM donations 
+                                     WHERE status = 'pending'
+                                     ORDER BY created_at DESC");
+
+$pendingDonations = [];
+if ($pendingQuery && mysqli_num_rows($pendingQuery) > 0) {
+    while ($row = mysqli_fetch_assoc($pendingQuery)) {
+        $pendingDonations[] = $row;
+    }
+}
+
+
         
     // Count pending donations
 $pendingQuery = mysqli_query($conn, "SELECT COUNT(*) as pending_count 
@@ -64,7 +100,7 @@ $totalDonationsCount = $totalResult['total_count'];
             }
         }
         
-        $conn->close();
+        // $conn->close();
     }
 }
 ?>
