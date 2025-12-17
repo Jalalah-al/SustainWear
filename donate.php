@@ -114,7 +114,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <body>
 
    <?php 
+   if($isLoggedIn){
         include 'headerAndFooter/loggedInHeader.php';
+   }
+   else{
+        header("Location: SignIn.php");
+   }
    ?>
 
 

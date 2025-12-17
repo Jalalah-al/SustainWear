@@ -3,7 +3,7 @@ session_start();
 
 // Check if user is logged in
 if (!isset($_SESSION['user_id'])) {
-    header("Location: login.php");
+    header("Location: SignIn.php");
     exit();
 }
 
@@ -96,8 +96,9 @@ $isLoggedIn = true;
 </head>
 <body>
 
-   <?php 
-        include 'headerAndFooter/loggedInHeader.php';
+    <?php 
+     include 'headerAndFooter/loggedInHeader.php';
+   
    ?>
 
     <main class="history-main">

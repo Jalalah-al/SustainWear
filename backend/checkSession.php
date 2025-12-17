@@ -5,8 +5,9 @@ require_once 'connect.php';
 if (isset($_SESSION['user_id'])) {
     $isLoggedIn = true;
     $user_ID = $_SESSION['user_id']; 
-} else {
-    header("Location: SignIn.php");
+}
+else {
+    $isLoggedIn = false;
 }
 
 $username = null;
