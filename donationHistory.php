@@ -1,22 +1,22 @@
 <?php
 session_start();
 
-// Check if user is logged in
+
 if (!isset($_SESSION['user_id'])) {
     header("Location: SignIn.php");
     exit();
 }
 
-$user_id = $_SESSION['user_id']; // Get user ID from session
+$user_id = $_SESSION['user_id']; 
 
 require 'backend/connect.php';
-$conn = connectDB(); // Connect to database
+$conn = connectDB(); 
 
-// Get account_id from accounts table using user_id
+
 $account_id = null;
 $account_query = "SELECT account_id FROM accounts WHERE user_id = ?";
 if ($stmt = $conn->prepare($account_query)) {
-    $stmt->bind_param("i", $user_id); // Use session user_id to find account_id
+    $stmt->bind_param("i", $user_id); 
     $stmt->execute();
     $stmt->bind_result($account_id);
     $stmt->fetch();
@@ -26,16 +26,15 @@ if ($stmt = $conn->prepare($account_query)) {
 $userDonations = [];
 $totalDonations = 0;
 
-// If account_id was found, fetch donations for this account
+
 if ($account_id) {
-    // THIS IS THE IMPORTANT QUERY THAT FETCHES DONATIONS:
-    // It gets all donations where account_id matches the user's account_id
+   
     $stmt = $conn->prepare("SELECT * FROM donations WHERE account_id = ? ORDER BY created_at DESC");
-    $stmt->bind_param("i", $account_id); // Use the account_id we found
+    $stmt->bind_param("i", $account_id); 
     $stmt->execute();
     $result = $stmt->get_result();
 
-    // Store each donation in an array
+    
     while ($row = $result->fetch_assoc()) {
         $userDonations[] = $row;
     }
@@ -43,7 +42,7 @@ if ($account_id) {
     $stmt->close();
 }
 
-$conn->close(); // Close database connection
+$conn->close(); 
 
 $isLoggedIn = true;
 ?>
@@ -216,39 +215,7 @@ $isLoggedIn = true;
         </div>
     </main>
 
-    <footer class="footer">
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-brand">
-                    <div class="logo">♻️</div>
-                    <h3>SustainWear</h3>
-                    <p>Making fashion sustainable, one donation at a time</p>
-                </div>
-                <div class="footer-links">
-                    <div class="link-group">
-                        <h4>Platform</h4>
-                        <a href="#">How it Works</a>
-                        <a href="#">For Donors</a>
-                        <a href="#">For Charities</a>
-                    </div>
-                    <div class="link-group">
-                        <h4>Company</h4>
-                        <a href="AboutUs.html">About Us</a>
-                        <a href="#">Impact</a>
-                    </div>
-                    <div class="link-group">
-                        <h4>Support</h4>
-                        <a href="ContactUs.php">Contact</a>
-                        <a href="Legal.php">Privacy</a>
-                        <a href="Legal.php">Terms</a>
-                    </div>
-                </div>
-            </div>
-            <div class="footer-bottom">
-                <p>&copy; 2025 SustainWear. All rights reserved.</p>
-            </div>
-        </div>
-    </footer>
+<?php include 'headerAndFooter/footer.php'; ?>
 
     <script src="js/donationHistory.js"></script>
 </body>

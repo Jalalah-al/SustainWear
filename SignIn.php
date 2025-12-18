@@ -46,5 +46,7 @@
             </div>
         </div>
     </main>
+<?php include 'headerAndFooter/footer.php'; ?>
+
 </body>
 </html>

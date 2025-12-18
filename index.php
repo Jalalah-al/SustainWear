@@ -161,6 +161,6 @@
         </div>
     </section>
 
-<?php include 'backend/footer.php'; ?>
+<?php include 'headerAndFooter/footer.php'; ?>
 </body>
 </html>

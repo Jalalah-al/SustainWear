@@ -36,37 +36,34 @@ if ($stmt = $conn->prepare($account_sql)) {
     $stmt->close();
 }
 
-// Handle form submission
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $bio = trim($_POST['bio'] ?? '');
     
-    // Handle profile picture upload
     $profilePicture = $account_data['profilePicture'] ?? null;
     
     if (isset($_FILES['profilePicture']) && $_FILES['profilePicture']['error'] == UPLOAD_ERR_OK) {
         $allowed_types = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp'];
         $file_type = $_FILES['profilePicture']['type'];
-        $max_file_size = 2 * 1024 * 1024; // 2MB
+        $max_file_size = 2 * 1024 * 1024;
         
-        // Check file type
+  
         if (in_array($file_type, $allowed_types)) {
-            // Check file size
+            
             if ($_FILES['profilePicture']['size'] <= $max_file_size) {
                 $upload_dir = 'uploads/profile_pictures/';
                 
-                // Create directory if it doesn't exist
+                
                 if (!file_exists($upload_dir)) {
                     mkdir($upload_dir, 0777, true);
                 }
                 
-                // Generate unique filename
+                
                 $file_ext = strtolower(pathinfo($_FILES['profilePicture']['name'], PATHINFO_EXTENSION));
                 $filename = 'profile_' . $user_id . '_' . time() . '.' . $file_ext;
                 $filepath = $upload_dir . $filename;
                 
-                // Move uploaded file
                 if (move_uploaded_file($_FILES['profilePicture']['tmp_name'], $filepath)) {
-                    // Delete old profile picture if exists and is in uploads directory
+                
                     if (!empty($account_data['profilePicture']) && 
                         file_exists($account_data['profilePicture']) &&
                         strpos($account_data['profilePicture'], 'uploads/profile_pictures/') !== false) {
@@ -85,23 +82,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
     }
     
-    // If no file was uploaded, keep existing picture
     if ($profilePicture === null && !empty($account_data['profilePicture'])) {
         $profilePicture = $account_data['profilePicture'];
     }
     
-    // If profile picture is empty, set to null
     if (empty($profilePicture)) {
         $profilePicture = null;
     }
     
-    // Validate bio length
     if (strlen($bio) > 500) {
         $error = "Bio is too long. Maximum 500 characters allowed.";
     } else {
-        // Check if account exists
         if (empty($account_data['account_id'])) {
-            // Create new account record
             $insert_sql = "INSERT INTO accounts (user_id, bio, profilePicture) VALUES (?, ?, ?)";
             if ($stmt = $conn->prepare($insert_sql)) {
                 $stmt->bind_param("iss", $user_id, $bio, $profilePicture);
@@ -113,7 +105,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 $stmt->close();
             }
         } else {
-            // Update existing account
             $update_sql = "UPDATE accounts SET bio = ?, profilePicture = ? WHERE user_id = ?";
             if ($stmt = $conn->prepare($update_sql)) {
                 $stmt->bind_param("ssi", $bio, $profilePicture, $user_id);
@@ -229,39 +220,7 @@ $conn->close();
         </div>
     </main>
 
-    <footer class="footer">
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-brand">
-                    <div class="logo">♻️</div>
-                    <h3>SustainWear</h3>
-                    <p>Making fashion sustainable, one donation at a time</p>
-                </div>
-                <div class="footer-links">
-                    <div class="link-group">
-                        <h4>Platform</h4>
-                        <a href="#">How it Works</a>
-                        <a href="#">For Donors</a>
-                        <a href="#">For Charities</a>
-                    </div>
-                    <div class="link-group">
-                        <h4>Company</h4>
-                        <a href="AboutUs.html">About Us</a>
-                        <a href="#">Impact</a>
-                    </div>
-                    <div class="link-group">
-                        <h4>Support</h4>
-                        <a href="ContactUs.php">Contact</a>
-                        <a href="Legal.php">Privacy</a>
-                        <a href="Legal.php">Terms</a>
-                    </div>
-                </div>
-            </div>
-            <div class="footer-bottom">
-                <p>&copy; 2025 SustainWear. All rights reserved.</p>
-            </div>
-        </div>
-    </footer>
+   <?php include 'headerAndFooter/footer.php'; ?>
 
     
  

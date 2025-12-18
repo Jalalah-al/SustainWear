@@ -1,4 +1,5 @@
 <?php 
+//this file is used to check for session expiration and log out the user if inactive for too long
 function checkSession ($path) {
     $expireAfter = 30; 
 
